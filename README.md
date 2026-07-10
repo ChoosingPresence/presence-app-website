@@ -51,12 +51,12 @@ wrangler.jsonc         Cloudflare Pages project name + build output dir
 
 ## Deployment
 
-**Live at https://practicingpresence.app**, hosted on Cloudflare Pages. Deploys
-are currently **direct-upload only** (`npm run deploy`) — pushing to GitHub
-does not auto-deploy yet; see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for
-exact steps, the known Wrangler CLI bug workaround, and how to connect Git
-integration. (Cloudflare account credentials/IDs are intentionally not
-documented in this public repo — ask Brian for deploy access.)
+**Live at https://practicingpresence.app**, hosted on Cloudflare Pages, with
+**Git integration connected** — every push to `main` builds and deploys
+automatically. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the manual
+direct-upload fallback and the known Wrangler CLI bug workaround. (Cloudflare
+account credentials/IDs are intentionally not documented in this public repo
+— ask Brian for deploy access.)
 
 ## Editing content
 

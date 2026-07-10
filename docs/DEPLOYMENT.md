@@ -11,7 +11,7 @@ global CDN and applies `public/_headers` to every response.
 | **Cloudflare account** | A dedicated account, separate from any personal Cloudflare login. Account ID/credentials are intentionally not recorded in this public repo — ask Brian for access. There is no persistent CLI session for it on any machine; deploying requires a fresh scoped API token each time (see below). |
 | **Pages project** | `presence-app-website` |
 | **Zone** | `practicingpresence.app`, already on Cloudflare DNS |
-| **Deploy method** | **Direct upload only** (`wrangler pages deploy`). Git integration is *not* connected — pushing to GitHub does **not** auto-deploy. See "Connecting Git integration" below to change that. |
+| **Deploy method** | **Git integration is connected** (confirmed 2026-07-10). Pushing to `main` on GitHub automatically builds (`npm run build`) and deploys via Cloudflare's pipeline — no manual step needed. Direct-upload (`wrangler pages deploy`) still works as a manual fallback (see below). |
 
 > **Note on the domain:** the site was originally scoped for `presence.app`, but
 > that domain is registered on AWS Route 53 and was never connected to
@@ -20,11 +20,21 @@ global CDN and applies `public/_headers` to every response.
 > to this Cloudflare account, treat it as a new custom-domain addition, not a
 > rename.
 
-## Deploying (direct upload)
+## Deploying
 
-Ask Brian for a Cloudflare API token for the deploy account, scoped to at
-minimum **Account → Cloudflare Pages → Edit**. He can create one at My Profile
-→ API Tokens while logged into that account.
+**Normal path: just push to `main`.** Git integration is connected — Cloudflare
+clones the repo, runs `npm run build`, and deploys `dist/` automatically on
+every push. Check progress and history in the dashboard under the
+`presence-app-website` project's **Deployments** tab, or via
+`GET /accounts/{account_id}/pages/projects/presence-app-website` (field
+`latest_deployment`) with a suitably-scoped API token.
+
+## Manual direct-upload (fallback only)
+
+Only needed if Git integration is ever disconnected, or to test a build before
+pushing. Ask Brian for a Cloudflare API token for the deploy account, scoped
+to at minimum **Account → Cloudflare Pages → Edit**. He can create one at My
+Profile → API Tokens while logged into that account.
 
 ```bash
 export CLOUDFLARE_API_TOKEN="<token>"
@@ -54,25 +64,26 @@ explicitly instead (ask Brian for the value).
 > ```
 > `wrangler pages deploy` (uploading, not creating) works fine.
 
-## Connecting Git integration (recommended, not yet done)
+## Git integration setup (already done — for reference)
 
-This turns "push to `main`" into an automatic deploy, and gives PR preview
-URLs. It requires authorizing a GitHub App, which only a human can do in a
+Connected 2026-07-10. Kept here in case it's ever disconnected and needs
+redoing. It requires authorizing a GitHub App, which only a human can do in a
 browser — it can't be scripted or done via API token.
 
 1. Dashboard (deploy account — ask Brian) → **Workers & Pages** →
    **presence-app-website** → **Settings** → **Builds & deployments**
 2. **Connect to Git** → choose **GitHub** → authorize the Cloudflare Pages App
    → grant access to `ChoosingPresence/presence-app-website`
-3. Build settings:
-   - **Framework preset:** Astro
+3. Build settings (confirmed live, auto-detected correctly):
+   - **Framework preset:** Astro (auto-detected)
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
    - **Node version:** set environment variable `NODE_VERSION=22` (or rely on `.nvmrc`)
 4. Set **Production branch** to `main`. Save.
 
-Once connected, every push to `main` deploys automatically and PRs get preview
-URLs — update this doc to say so once it's live.
+Verified working: pushing the `docs/AUDIT.md` commit on 2026-07-10 triggered
+an automatic build (clone → build → deploy, all stages succeeded in ~30s) with
+no manual action needed. PR previews are enabled too (`preview_deployment_setting: "all"`).
 
 ## Custom domain (already done for practicingpresence.app)
 

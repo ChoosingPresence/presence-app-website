@@ -75,10 +75,11 @@ tutorial videos, and connects visitors to Choosing Presence and the book
    Purge** permission, which wasn't granted on the working token. Cosmetic
    only; doesn't affect crawling (search engines discover sitemaps via other
    means too).
-3. **Git integration is not connected.** Deploys are direct-upload only.
-   Pushing to `main` on GitHub does not trigger a Cloudflare Pages build. This
-   requires a human to authorize a GitHub App in the Cloudflare dashboard (see
-   docs/DEPLOYMENT.md) — it cannot be done via API/CLI.
+3. ~~Git integration is not connected.~~ **Resolved 2026-07-10.** Brian
+   connected it via the dashboard (required a human to authorize the GitHub
+   App — can't be done via API/CLI). Verified working: the very next push
+   (this audit's commit) auto-triggered a full clone → build → deploy cycle
+   that succeeded in ~30 seconds. See docs/DEPLOYMENT.md.
 
 ## Notable technical gotchas discovered (for future reference)
 

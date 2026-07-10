@@ -7,10 +7,8 @@ just a starting point for prioritization conversations.
 
 1. **Fix the `www.practicingpresence.app` redirect** — currently returns an
    empty `Location` header (see docs/AUDIT.md). Low effort, visible bug.
-2. **Connect Git integration** in the Cloudflare dashboard so pushes to `main`
-   auto-deploy (docs/DEPLOYMENT.md has the exact steps). Right now every
-   content change requires someone to run a manual deploy with a fresh API
-   token — that's real friction for anyone editing copy later.
+2. ~~Connect Git integration~~ **Done 2026-07-10** — pushes to `main` now
+   auto-deploy.
 3. **Purge the cached `robots.txt`** (or wait out its TTL) so the sitemap URL
    inside it isn't stale.
 4. **Revoke** any Cloudflare API tokens created for manual deploys once no
