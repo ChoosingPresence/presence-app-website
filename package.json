@@ -1,7 +1,7 @@
 {
   "name": "presence-app-website",
   "version": "0.1.0",
-  "description": "Marketing and information website for the Practicing Presence app (presence.app)",
+  "description": "Marketing and information website for the Practicing Presence app (practicingpresence.app)",
   "type": "module",
   "private": true,
   "engines": {

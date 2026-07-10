@@ -16,15 +16,15 @@ global CDN and applies `public/_headers` to every response.
 4. Deploy. Every push to `main` now deploys automatically; pull requests get
    preview URLs.
 
-## Custom domain (presence.app)
+## Custom domain (practicingpresence.app)
 
-1. Add the `presence.app` zone to the same Cloudflare account (if not already).
+1. Add the `practicingpresence.app` zone to the same Cloudflare account (if not already).
 2. In the Pages project → **Custom domains** → **Set up a custom domain** →
-   enter `presence.app`. Cloudflare creates the CNAME record automatically
+   enter `practicingpresence.app`. Cloudflare creates the CNAME record automatically
    when the zone is on the same account.
-3. Optionally add `www.presence.app` as a second custom domain, then create a
-   **Bulk Redirect** (or Redirect Rule) from `www.presence.app/*` to
-   `https://presence.app/$1` (301).
+3. Optionally add `www.practicingpresence.app` as a second custom domain, then create a
+   **Bulk Redirect** (or Redirect Rule) from `www.practicingpresence.app/*` to
+   `https://practicingpresence.app/$1` (301).
 4. Under the zone's **SSL/TLS** settings, confirm **Full (strict)** and enable
    **Always Use HTTPS**.
 
@@ -44,9 +44,9 @@ stays the source of truth.
 
 ## Post-deploy checklist
 
-- [ ] `https://presence.app` loads with a valid certificate
-- [ ] Security headers present: `curl -sI https://presence.app | grep -iE 'content-security|frame|referrer|transport'`
-- [ ] `https://presence.app/sitemap-index.xml` and `/robots.txt` respond
+- [ ] `https://practicingpresence.app` loads with a valid certificate
+- [ ] Security headers present: `curl -sI https://practicingpresence.app | grep -iE 'content-security|frame|referrer|transport'`
+- [ ] `https://practicingpresence.app/sitemap-index.xml` and `/robots.txt` respond
 - [ ] App Store / Google Play / Amazon / affiliate links resolve
 - [ ] Tutorials page plays the YouTube playlist
 - [ ] Lighthouse (mobile) — aim for 95+ across the board

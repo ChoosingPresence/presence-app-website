@@ -1,8 +1,8 @@
-# presence.app — Practicing Presence Website
+# practicingpresence.app — Practicing Presence Website
 
 Marketing and information website for **Practicing Presence — A Christian Way**,
 the free Christian mindfulness app for iOS and Android. Live at
-[presence.app](https://presence.app), hosted on **Cloudflare Pages**.
+[practicingpresence.app](https://practicingpresence.app), hosted on **Cloudflare Pages**.
 
 The site does **not** host or serve the app itself. It provides:
 
@@ -52,7 +52,7 @@ docs/                 Deployment, content, and security documentation
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Short version: connect this repo
 to a Cloudflare Pages project (build command `npm run build`, output `dist`),
-then attach the `presence.app` custom domain.
+then attach the `practicingpresence.app` custom domain.
 
 ## Editing content
 

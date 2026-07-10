@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://presence.app',
+  site: 'https://practicingpresence.app',
   integrations: [sitemap()],
   build: {
     // Keep all CSS in external files so the Content-Security-Policy

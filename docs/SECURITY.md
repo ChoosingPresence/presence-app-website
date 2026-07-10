@@ -49,8 +49,8 @@ Notes:
 
 - [ ] `npm audit` — no high/critical findings
 - [ ] `npm run build` succeeds with no warnings
-- [ ] `curl -sI https://presence.app` shows all headers above
+- [ ] `curl -sI https://practicingpresence.app` shows all headers above
 - [ ] Test CSP: browser console shows no CSP violations on any page
 - [ ] Confirm no unexpected network requests (DevTools → Network: only
-      presence.app assets, plus youtube-nocookie.com on /tutorials/)
+      practicingpresence.app assets, plus youtube-nocookie.com on /tutorials/)
 - [ ] Mozilla Observatory (https://observatory.mozilla.org) — grade A/A+
