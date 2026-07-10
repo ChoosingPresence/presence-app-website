@@ -11,4 +11,13 @@ export default defineConfig({
     // (style-src 'self' in public/_headers) can stay strict.
     inlineStylesheets: 'never',
   },
+  vite: {
+    build: {
+      // Small <script> tags (e.g. the theme/menu toggle) would otherwise get
+      // inlined into the HTML by Vite's default asset-inlining threshold,
+      // which the CSP's script-src 'self' blocks. Force every script to be
+      // emitted as an external, same-origin file instead.
+      assetsInlineLimit: 0,
+    },
+  },
 });

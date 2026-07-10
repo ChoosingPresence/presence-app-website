@@ -11,6 +11,9 @@ The site does **not** host or serve the app itself. It provides:
 - Video [tutorials](https://www.youtube.com/playlist?list=PL1qzXPAmdoCVqr6hoYGO9zuvayxHs63hv)
 - The app's connection to [Choosing Presence](https://www.choosingpresence.org) and the Practice of Presence
 - A clear statement that the app is **100% free** — no account, no ads, no in-app purchases
+- Light/dark mode (follows system preference, toggle in the header) and a
+  mobile hamburger menu, both built with a single small first-party script
+  (no third-party JS)
 
 Maintained by **B:Drive Communications, LLC**.
 

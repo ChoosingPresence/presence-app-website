@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------- */
 
 :root {
-  /* Brand colors */
+  /* Brand colors — constant across themes */
   --teal-950: #123b3e;
   --teal-800: #1c5a5e;
   --teal-600: #2e7d82;
@@ -17,11 +17,22 @@
   --cream: #f7faf4;
   --white: #ffffff;
 
-  /* Semantic */
+  /* Semantic — these flip for dark mode below */
   --ink: #1b3a3c;
   --ink-muted: #48696b;
   --surface: var(--cream);
   --surface-card: var(--white);
+  --heading: var(--teal-800);
+  --accent: var(--sage-dark);
+  --link: var(--teal-600);
+  --link-hover: var(--teal-800);
+  --border-subtle: rgba(28, 90, 94, 0.12);
+  --shadow: 0 10px 30px rgba(18, 59, 62, 0.12);
+  --hero-grad-1: #eef7ee;
+  --hero-grad-2: var(--teal-100);
+  --hero-grad-3: #cfe4de;
+  --tint-grad-1: #eef5ee;
+  --tint-grad-2: var(--teal-100);
 
   /* Type */
   --font-display: 'Quicksand', 'Avenir Next', 'Trebuchet MS', sans-serif;
@@ -31,7 +42,48 @@
   --max-width: 72rem;
   --radius: 1.25rem;
   --radius-sm: 0.75rem;
-  --shadow: 0 10px 30px rgba(18, 59, 62, 0.12);
+}
+
+/* ---------------------------------------------------------------------------
+   Dark mode
+   Default signal is the OS preference; an explicit choice from the toggle
+   (persisted in localStorage, applied via a `data-theme` attribute on <html>
+   by src/scripts/theme.js) always wins over the OS preference.
+--------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ink: #e7f3f0;
+    --ink-muted: #a9c4c0;
+    --surface: #0e1b1c;
+    --surface-card: #17282a;
+    --heading: #8fe0cf;
+    --accent: #c3e6a9;
+    --link: #5fb3b8;
+    --link-hover: #7bd0d4;
+    --border-subtle: rgba(255, 255, 255, 0.14);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+    --hero-grad-1: #12292a;
+    --hero-grad-2: #163c3e;
+    --hero-grad-3: #0d2224;
+    --tint-grad-1: #122829;
+    --tint-grad-2: #173e40;
+  }
+}
+
+:root[data-theme='dark'] {
+  --ink: #e7f3f0;
+  --ink-muted: #a9c4c0;
+  --surface: #0e1b1c;
+  --surface-card: #17282a;
+  --heading: #8fe0cf;
+  --accent: #c3e6a9;
+  --border-subtle: rgba(255, 255, 255, 0.14);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  --hero-grad-1: #12292a;
+  --hero-grad-2: #163c3e;
+  --hero-grad-3: #0d2224;
+  --tint-grad-1: #122829;
+  --tint-grad-2: #173e40;
 }
 
 *,
@@ -42,6 +94,7 @@
 
 html {
   scroll-behavior: smooth;
+  color-scheme: light dark;
 }
 
 body {
@@ -53,6 +106,7 @@ body {
   background: var(--surface);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 150ms ease, color 150ms ease;
 }
 
 h1,
@@ -62,7 +116,7 @@ h4 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.2;
-  color: var(--teal-800);
+  color: var(--heading);
   margin: 0 0 0.75rem;
 }
 
@@ -84,13 +138,13 @@ p {
 }
 
 a {
-  color: var(--teal-600);
+  color: var(--link);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
 a:hover {
-  color: var(--teal-800);
+  color: var(--link-hover);
 }
 
 img {
@@ -129,7 +183,7 @@ img {
 }
 
 .section--tint {
-  background: linear-gradient(180deg, #eef5ee 0%, var(--teal-100) 100%);
+  background: linear-gradient(180deg, var(--tint-grad-1) 0%, var(--tint-grad-2) 100%);
 }
 
 .section--deep {
@@ -191,7 +245,7 @@ img {
 
 .button--ghost {
   border: 2px solid currentColor;
-  color: var(--teal-800);
+  color: var(--heading);
 }
 
 .section--deep .button--ghost {
@@ -204,6 +258,55 @@ img {
   border-radius: var(--radius);
   padding: 1.75rem;
   box-shadow: var(--shadow);
+}
+
+/* Theme toggle icon swap (moon = click to go dark, sun = click to go light) */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+.theme-toggle .icon-moon {
+  display: block;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-moon {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-toggle .icon-sun {
+    display: block;
+  }
+
+  :root:not([data-theme='light']) .theme-toggle .icon-moon {
+    display: none;
+  }
+}
+
+/* Phone screenshot frame — reused for the hero image and screenshot gallery */
+.phone-frame {
+  display: inline-block;
+  border-radius: 2.4rem;
+  border: 10px solid var(--teal-950);
+  box-shadow: 0 24px 60px rgba(18, 59, 62, 0.35);
+  overflow: hidden;
+  max-width: 300px;
+  line-height: 0;
+}
+
+.phone-frame img {
+  display: block;
+}
+
+.phone-frame--sm {
+  border-radius: 1.6rem;
+  border-width: 7px;
+  max-width: 240px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
 }
 
 /* Utility */
@@ -226,6 +329,10 @@ img {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  body {
+    transition: none;
   }
 
   .button,

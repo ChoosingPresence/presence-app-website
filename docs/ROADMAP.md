@@ -10,6 +10,13 @@ just a starting point for prioritization conversations.
    auto-deploy.
 3. **Revoke** any Cloudflare API tokens created for manual deploys once no
    longer needed — they're short-lived by design, but tidy up regardless.
+4. **Manually click-test dark mode and the mobile hamburger menu** in a real
+   browser (toggle button, menu open/close, both themes, a few breakpoints).
+   This was implemented and verified via build output/contrast math/logic
+   tracing but not via live browser interaction — the Claude in Chrome
+   extension was unreachable for that session. See docs/AUDIT.md's "Dark
+   mode / hamburger menu implementation" section for exactly what was and
+   wasn't verified.
 
 ## Deprioritized
 

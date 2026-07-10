@@ -44,6 +44,75 @@ tutorial videos, and connects visitors to Choosing Presence and the book
    across 320px–1920px, documentation corrected to match reality (it
    previously described a Git-integration deploy flow that was never actually
    connected), and `wrangler.jsonc` added for reproducible future deploys.
+7. **www redirect fixed, robots.txt investigated and deprioritized.** The
+   `www` redirect rule's broken `wildcard_replace()` expression was replaced
+   with a static redirect. The stale `robots.txt` sitemap URL survived a
+   targeted purge, a full zone purge, and toggling the Manage Robots.txt
+   setting — concluded to be a frozen snapshot inside Cloudflare's AI Crawl
+   Control feature with no exposed fix; parked as low-impact.
+8. **Visual refresh**: phone-frame bezels added to all screenshots (not just
+   the hero image), full dark mode with a header toggle (follows OS
+   preference by default, persisted via `localStorage` on explicit choice),
+   and a mobile hamburger menu replacing the wrapping nav. See "Dark mode /
+   hamburger menu implementation" below for what this actually touched and
+   how it was verified.
+
+## Dark mode / hamburger menu implementation (2026-07-10)
+
+**Architecture**: all color is now driven by CSS custom properties in
+`src/styles/global.css` — fixed brand colors stay constant across themes;
+semantic tokens (`--ink`, `--surface`, `--heading`, `--link`, etc.) flip via
+`@media (prefers-color-scheme: dark)` for the OS-default case and
+`:root[data-theme='dark'|'light']` for an explicit toggle choice (which always
+wins over the OS setting). A ~30-line script in `Header.astro` applies the
+attribute on load and on toggle click, and persists explicit choices to
+`localStorage`.
+
+**A real bug caught before shipping**: Astro's build was **inlining** the
+toggle script directly into the HTML (`<script type="module">` with no `src`)
+rather than emitting it as an external file — small scripts fall under Vite's
+default asset-inlining threshold. The site's CSP (`script-src 'self'`) would
+have silently blocked this inline script in the browser, breaking both the
+theme toggle and the hamburger menu on the live site while the build itself
+reported success. Fixed by setting `vite.build.assetsInlineLimit: 0` in
+`astro.config.mjs`, forcing all scripts to be emitted as external, hashed,
+same-origin files. Verified by inspecting the built HTML directly
+(`grep -o '<script[^>]*>' dist/index.html`) before and after.
+
+**Contrast was checked mathematically, not just visually assumed.** WCAG
+relative-luminance contrast ratios were computed for every text/background
+combination introduced or affected by dark mode. This caught one real
+pre-existing-color-now-broken issue: the link color (brand `--teal-600`,
+unchanged since it wasn't originally theme-aware) only achieved 3.67:1
+contrast against the new dark page background — failing WCAG AA for normal
+text (needs 4.5:1). Added dedicated `--link`/`--link-hover` tokens with
+dark-mode-specific values (`#5fb3b8` / `#7bd0d4`) that clear 6.3–9.9:1 against
+both dark surfaces. All other text/background pairs introduced by dark mode
+were verified ≥8:1. (One pre-existing, unrelated, borderline issue was found
+and left as-is: white text on the `.button--sage:hover` state is 3.71:1,
+under the 4.5:1 normal-text threshold though over the 3:1 large-text one —
+affects both themes equally, not a dark-mode regression, minor.)
+
+**Header breakpoint was derived, not guessed.** Adding the theme toggle to
+the header increases the desktop nav's minimum width. A rough calculation
+(brand + toggle + 3 nav links + CTA button + container padding) estimated
+~771px needed — comfortably inside the original 640px mobile breakpoint,
+which would have caused the desktop nav to visibly crowd or wrap in the
+640–771px range. Raised to 860px (nav shows ≥861px) to give real margin;
+iPad-portrait (768px) now cleanly gets the hamburger menu instead of a
+cramped nav bar.
+
+**Verification method and its limits**: build correctness, CSP compliance,
+and color contrast were all verified directly against the compiled build
+output (reading `dist/_astro/*.css` and `dist/_astro/*.js`, and computing
+contrast ratios programmatically) and by manually tracing the toggle script's
+logic. **Live browser interaction testing (actually clicking the toggle and
+hamburger, visually inspecting both themes) could not be completed** — the
+Claude in Chrome extension was unreachable for the whole session. This is a
+real gap: static analysis catches logic and contrast errors but can't catch
+things like a click target being visually misaligned or a transition looking
+janky. Recommend an actual click-through in both themes, at a few
+breakpoints, before considering this fully done.
 
 ## Current live state (verified 2026-07-10)
 
