@@ -1,0 +1,9 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Pages' config schema rejects "account_id" once "pages_build_output_dir" is
+	// set (tested with wrangler 4.110.0) — account resolution instead relies on
+	// the API token being scoped to a single account, or CLOUDFLARE_ACCOUNT_ID.
+	// See docs/DEPLOYMENT.md for the account ID and required token scopes.
+	"name": "presence-app-website",
+	"pages_build_output_dir": "dist"
+}

@@ -41,9 +41,14 @@ Notes:
 - 4 runtime-free dependencies (Astro, sitemap integration, two font packages);
   everything is build-time only — nothing they ship runs in visitors' browsers
   except generated CSS/fonts.
-- `package-lock.json` is committed; run `npm audit` before releases.
-- No secrets exist in this repo (no API keys, no tokens). Cloudflare deploys
-  via Git integration, so no deploy credentials are stored locally either.
+- `package-lock.json` is committed; run `npm audit` before releases (last run:
+  2026-07-10, 0 vulnerabilities).
+- No secrets exist in this repo (no API keys, no tokens, checked against full
+  git history). Deploys currently use direct-upload with a short-lived,
+  narrowly-scoped Cloudflare API token generated per session — never committed
+  or stored on disk. See [docs/DEPLOYMENT.md](DEPLOYMENT.md) for the token
+  scopes needed and the Git-integration alternative (which would remove the
+  need for manual tokens entirely).
 
 ## Self-audit checklist (run before each release)
 

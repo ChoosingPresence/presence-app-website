@@ -45,14 +45,18 @@ src/
   layouts/            BaseLayout (SEO meta, fonts, header/footer)
   pages/              index, tutorials, about, privacy, 404
   styles/global.css   Brand palette + shared styles
-docs/                 Deployment, content, and security documentation
+docs/                 Deployment, content, security, audit, and roadmap docs
+wrangler.jsonc         Cloudflare Pages project name + build output dir
 ```
 
 ## Deployment
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Short version: connect this repo
-to a Cloudflare Pages project (build command `npm run build`, output `dist`),
-then attach the `practicingpresence.app` custom domain.
+**Live at https://practicingpresence.app**, hosted on Cloudflare Pages. Deploys
+are currently **direct-upload only** (`npm run deploy`) — pushing to GitHub
+does not auto-deploy yet; see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for
+exact steps, the known Wrangler CLI bug workaround, and how to connect Git
+integration. (Cloudflare account credentials/IDs are intentionally not
+documented in this public repo — ask Brian for deploy access.)
 
 ## Editing content
 
@@ -63,6 +67,12 @@ copy, link, and image lives.
 
 See [docs/SECURITY.md](docs/SECURITY.md) for the security posture and
 self-audit notes (strict CSP, no third-party scripts, no cookies).
+
+## Project history & roadmap
+
+- [docs/AUDIT.md](docs/AUDIT.md) — how this site was built and deployed, what
+  went wrong along the way, current verified live status, and known open issues
+- [docs/ROADMAP.md](docs/ROADMAP.md) — prioritized suggestions for future work
 
 ---
 
