@@ -8,15 +8,24 @@ just a starting point for prioritization conversations.
 1. ~~Fix the `www.practicingpresence.app` redirect~~ **Done 2026-07-10.**
 2. ~~Connect Git integration~~ **Done 2026-07-10** — pushes to `main` now
    auto-deploy.
-3. **Revoke** any Cloudflare API tokens created for manual deploys once no
-   longer needed — they're short-lived by design, but tidy up regardless.
+3. **Check whether the stuck edge cache has cleared.** As of 2026-07-10,
+   `practicingpresence.app` is serving a frozen stale snapshot that survived
+   5 purge attempts and a full domain detach/reattach — see docs/AUDIT.md's
+   "Stuck edge cache" section. Quick check: `curl -sD - "https://practicingpresence.app/?cb=$(date +%s)" -o /dev/null | grep -i etag`
+   — if it's no longer `3af2fb23a51413e1b0360e7c15147441`, it's cleared;
+   re-verify the site fully from there. If still stuck after a day or two,
+   next step is Cloudflare's community support form (no paid plan currently,
+   so no direct ticket queue).
 4. **Manually click-test dark mode and the mobile hamburger menu** in a real
-   browser (toggle button, menu open/close, both themes, a few breakpoints).
+   browser (toggle button, menu open/close, both themes, a few breakpoints)
+   — blocked on #3 above until the live site reflects the current deploy.
    This was implemented and verified via build output/contrast math/logic
    tracing but not via live browser interaction — the Claude in Chrome
-   extension was unreachable for that session. See docs/AUDIT.md's "Dark
-   mode / hamburger menu implementation" section for exactly what was and
-   wasn't verified.
+   extension was unreachable that session. See docs/AUDIT.md's "Dark mode /
+   hamburger menu implementation" section for exactly what was and wasn't
+   verified.
+5. **Revoke** any Cloudflare API tokens created for manual work once no
+   longer needed — they're short-lived by design, but tidy up regardless.
 
 ## Deprioritized
 

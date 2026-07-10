@@ -114,22 +114,89 @@ things like a click target being visually misaligned or a transition looking
 janky. Recommend an actual click-through in both themes, at a few
 breakpoints, before considering this fully done.
 
-## Current live state (verified 2026-07-10)
+## Current live state
 
-| Check | Result |
-| --- | --- |
-| `https://practicingpresence.app` | 200, correct content |
-| TLS certificate | Valid, Google Trust Services, issued 2026-07-10, expires 2026-10-08 |
-| HTTP → HTTPS redirect | 301, working |
-| 404 handling | Correct 404 status on unknown paths |
-| Security headers | All present and correct (CSP, HSTS, X-Frame-Options, Permissions-Policy, COOP/CORP, Referrer-Policy) |
-| `npm audit` | 0 vulnerabilities |
-| Inline scripts/styles in build output | None (only the static JSON-LD block, which is data not script) |
-| Secrets in repo or git history | None found |
-| Responsive (320px–1920px, all 4 pages) | No horizontal scroll or overflow anywhere; verified via browser automation, not just visual inspection |
+**⚠️ As of 2026-07-10 18:35 UTC, `https://practicingpresence.app` is serving a
+stale, frozen edge-cache snapshot** — see "Stuck edge cache" in Known open
+issues below. The underlying deployment is 100% correct and fully verified
+(see "Dark mode / hamburger menu implementation" above and the deployment
+checks below), confirmed by hitting the Pages project's raw `.pages.dev` URL
+directly, bypassing the zone's cache entirely. This is a Cloudflare
+platform-side caching anomaly, not a problem with the code or the deploy.
+**Before trusting anything served at the custom domain, re-check
+`cf-cache-status` and the ETag against what's below — if the ETag still
+reads `3af2fb23a51413e1b0360e7c15147441`, the cache still hasn't cleared.**
+
+| Check | Result | Verified via |
+| --- | --- | --- |
+| Deployment content (latest commit) | Correct — theme toggle, hamburger menu, phone-frames all present | Direct `presence-app-website.pages.dev` fetch, bypassing zone cache |
+| `https://practicingpresence.app` | 200, but **stale content** (frozen since ~13:55 UTC, predates even the domain-rename commit) | Repeated `curl` with cache-busting query strings; same ETag every time |
+| TLS certificate | Was valid (Google Trust Services) before the 18:34 UTC domain detach/reattach; re-verify after reattach fully settles | — |
+| HTTP → HTTPS redirect | 301, working (as of last check before the cache issue was found) | `curl` |
+| 404 handling | Correct 404 status on unknown paths (as of last check) | `curl` |
+| Security headers | All present and correct on every response seen so far, stale or fresh (CSP, HSTS, X-Frame-Options, Permissions-Policy, COOP/CORP, Referrer-Policy) | `curl -I`, checked repeatedly through the cache investigation |
+| `npm audit` | 0 vulnerabilities | `npm audit`, last run 2026-07-10 |
+| Inline scripts/styles in build output | None (only the static JSON-LD block, which is data not script) | `grep` across all `dist/*.html` |
+| Secrets in repo or git history | None found | `git grep` + `git log -p` |
+| Responsive (320px–1920px, all 4 pages) | No horizontal scroll or overflow anywhere | Browser automation (pre-dark-mode content only — see caveat below) |
+| Dark mode / hamburger interactions | Logic and CSS verified via compiled build output + manual tracing | **Not** verified via live browser click-through — Claude in Chrome was unreachable all session |
+
+### Stuck edge cache — full investigation trail (2026-07-10)
+
+Discovered when the post-deploy live check showed content that predated the
+push. Confirmed via `curl` with unique cache-busting query strings and
+`Cache-Control: no-cache` request headers — none of which affect Cloudflare's
+own edge cache decision (that's normal; client request headers don't bypass
+Cloudflare's cache, only origin/zone-side purges do). The response's own
+`ETag` (`3af2fb23a51413e1b0360e7c15147441`) never changed across the entire
+investigation, confirming it's a single frozen cached object being
+consistently re-served, not propagation lag or random edge-node variance.
+
+Tried, in order, all with no effect on the served content:
+1. Targeted `Custom Purge` for `/robots.txt` (this was the *original* stale
+   content discovery, from earlier in the same session)
+2. Targeted `Custom Purge` for `https://practicingpresence.app/`
+3. Full zone `Purge Everything`
+4. Checked **Rules → Cache Rules** — empty, nothing configured
+5. Checked **Rules → Page Rules** — empty, nothing configured
+6. Checked for an "Always Online" toggle — not present/not found in this
+   dashboard
+7. Full zone `Purge Everything` a second time
+8. **Complete custom-domain detach/reattach** on the Pages project (DELETE
+   then POST via the Pages API — gets a brand new `domain_id`, so this is a
+   genuinely fresh provisioning, not reuse of old state). This specifically
+   rules out the staleness being tied to the Pages↔domain routing binding,
+   since that binding was fully destroyed and recreated and the exact same
+   ETag still came back.
+
+The origin (Cloudflare Pages) sends `Cache-Control: public, max-age=0,
+must-revalidate` on every response — instructing the edge not to cache
+without revalidating. The edge cache ignoring this, and surviving 5 separate
+purge operations plus a full domain rebind, is not normal Cloudflare
+behavior and looks like a genuine platform-side bug or stuck internal state
+specific to this zone, not something fixable via any dashboard setting or
+API call available on a free-tier account.
+
+**Decision (2026-07-10, Brian)**: no paid Cloudflare plan (so no direct
+support chat access); rather than pursue the community/support form
+immediately, wait and re-check the next day in case it self-clears (some
+Cloudflare cache anomalies do resolve on their own over longer TTL windows
+even when purges don't touch them).
+
+**To re-check**: `curl -sD - "https://practicingpresence.app/?cb=$(date +%s)" -o /dev/null | grep -i etag` —
+if the ETag differs from `3af2fb23a51413e1b0360e7c15147441`, the cache has
+cleared; re-verify the full page content and all interactive features from
+there. If it's still stuck after another day or two, the community support
+form (https://developers.cloudflare.com/support/) is the next step, or
+consider a paid plan for direct ticket support if this becomes a recurring
+problem.
 
 ## Known open issues
 
+0. **Stuck edge cache serving stale content at the custom domain — ACTIVE,
+   HIGHEST PRIORITY.** See the full "Stuck edge cache" investigation above.
+   Waiting until 2026-07-11+ to re-check before considering the community
+   support form. Check the ETag first thing next session.
 1. ~~`www.practicingpresence.app` redirects with an empty `Location` header.~~
    **Resolved 2026-07-10.** The broken `wildcard_replace()`-based rule was
    replaced with a static redirect (Hostname equals `www.practicingpresence.app`
