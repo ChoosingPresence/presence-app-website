@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy — Practicing Presence"
+  description="Privacy information for the Practicing Presence app and the presence.app website. No account, no sign-up, no ads, no tracking on this site."
+  path="/privacy/"
+>
+  <section class="section">
+    <div class="container privacy">
+      <h1>Privacy</h1>
+      <p class="section__lead">
+        Practicing Presence was built to be quiet — in every sense. Here is
+        plainly what that means for your privacy.
+      </p>
+
+      <h2>This website (presence.app)</h2>
+      <ul>
+        <li>This is a static informational site. It has no user accounts and no forms.</li>
+        <li>It sets no cookies and runs no advertising or third-party tracking scripts.</li>
+        <li>
+          Tutorial videos are embedded from YouTube in privacy-enhanced mode
+          (youtube-nocookie.com). YouTube receives no cookie data from your visit
+          unless you press play; if you do, YouTube&rsquo;s own&#32;
+          <a href="https://policies.google.com/privacy" rel="noopener">privacy policy</a> applies.
+        </li>
+        <li>
+          Links to the App Store, Google Play, Amazon, and affiliated sites take
+          you to services governed by their own privacy policies.
+        </li>
+      </ul>
+
+      <h2>The Practicing Presence app</h2>
+      <ul>
+        <li>The app is 100% free, with no advertisements and no in-app purchases.</li>
+        <li>No account or sign-up is required, and the app never asks for your name, email, or any personal profile.</li>
+        <li>Your notification preferences (reminder start and end times) are stored on your device.</li>
+        <li>
+          Like most apps, it may use standard, anonymized crash and diagnostic
+          reporting so problems can be found and fixed. For the authoritative,
+          current data-practice disclosures, see the app&rsquo;s&#32;
+          <a href="https://apps.apple.com/us/app/practicing-presence/id1467007716" rel="noopener">App Store listing</a>&#32;
+          and&#32;
+          <a href="https://play.google.com/store/apps/details?id=com.zeek.practicingpresence" rel="noopener">Google Play listing</a>.
+        </li>
+      </ul>
+
+      <h2>Contact</h2>
+      <p>
+        Practicing Presence and presence.app are maintained by B:Drive
+        Communications, LLC. Questions about privacy or the app are welcome
+        through the support links on the&#32;
+        <a href="https://www.choosingpresence.org/christian-mindfulness-app" rel="noopener">Choosing Presence app page</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy {
+    max-width: 46rem;
+  }
+
+  .privacy h2 {
+    margin-top: 2.25rem;
+    font-size: 1.4rem;
+  }
+
+  .privacy ul {
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+</style>

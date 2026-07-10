@@ -1,0 +1,20 @@
+# Security headers served by Cloudflare Pages for every response.
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  Content-Security-Policy: default-src 'none'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Hashed build assets are safe to cache forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images change rarely; cache for a day at the edge/browser.
+/images/*
+  Cache-Control: public, max-age=86400

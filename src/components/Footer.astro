@@ -1,0 +1,94 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>Practicing Presence</h3>
+        <p>
+          A free Christian mindfulness app — pause, breathe, and rest in God's
+          presence. No account, no ads, no in-app purchases. Ever.
+        </p>
+        <p>
+          Maintained by <strong>B:Drive Communications, LLC</strong>.
+        </p>
+      </div>
+      <nav aria-label="Site">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/tutorials/">Tutorials</a></li>
+          <li><a href="/about/">About &amp; Affiliations</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/#download">Download the App</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Sponsors and affiliations">
+        <h3>Sponsors &amp; Affiliations</h3>
+        <ul>
+          <li>
+            <a href="https://www.choosingpresence.org" rel="noopener">Choosing Presence</a>
+          </li>
+          <li>
+            <a href="https://brianmueller.com" rel="noopener">Brian Mueller</a>&#32;&middot;&#32;
+            <a href="https://brianspoems.com" rel="noopener">Brian's Poems</a>
+          </li>
+          <li>
+            <a href="https://illuman.org" rel="noopener">Illuman</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <p class="footer-legal">
+      &copy; {year} B:Drive Communications, LLC. All rights reserved. Apple and the
+      App Store are trademarks of Apple Inc. Google Play is a trademark of Google LLC.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--teal-950);
+    color: rgba(255, 255, 255, 0.85);
+    padding-block: 3rem 2rem;
+    margin-top: 0;
+  }
+
+  .site-footer h3 {
+    color: var(--leaf);
+    font-size: 1.05rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .site-footer a {
+    color: var(--white);
+  }
+
+  .site-footer a:hover {
+    color: var(--leaf);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-grid ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .footer-legal {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/tutorials/', label: 'Tutorials' },
+  { href: '/about/', label: 'About' },
+];
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/">
+      <img src="/images/app-icon.png" alt="" width="44" height="44" />
+      <span class="brand__text">
+        <strong>Practicing Presence</strong>
+        <small>A Christian Way</small>
+      </span>
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-list">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={currentPath === item.href ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a class="button button--sage nav-cta" href="/#download">Get the App</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid rgba(28, 90, 94, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.65rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+  }
+
+  .brand img {
+    border-radius: 10px;
+  }
+
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brand__text strong {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--teal-800);
+  }
+
+  .brand__text small {
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-list a:not(.nav-cta) {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--teal-800);
+    padding-block: 0.4rem;
+  }
+
+  .nav-list a[aria-current='page'] {
+    border-bottom: 3px solid var(--sage);
+  }
+
+  .nav-cta {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    .site-header {
+      position: static;
+    }
+
+    .site-header__inner {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .nav-list {
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const PLAYLIST_ID = 'PL1qzXPAmdoCVqr6hoYGO9zuvayxHs63hv';
+const PLAYLIST_URL = `https://www.youtube.com/playlist?list=${PLAYLIST_ID}`;
+// Privacy-enhanced embed: youtube-nocookie.com sets no cookies until playback.
+const EMBED_URL = `https://www.youtube-nocookie.com/embed/videoseries?list=${PLAYLIST_ID}`;
+
+const steps = [
+  {
+    title: '1. Install the app',
+    body: 'Download Practicing Presence free from the App Store (iPhone, iPad) or Google Play (Android). No account or sign-up is needed — the app is ready the moment it opens.',
+  },
+  {
+    title: '2. Set your reminder window',
+    body: 'On first launch, choose a start and end time (for example, 7:00 am to 9:00 pm). During that window the app offers gentle hourly invitations to pause for three conscious breaths.',
+  },
+  {
+    title: '3. Begin with the Morning Practice',
+    body: 'Choose 10, 15, or 20 minutes — or open-ended. Rest a hand on your heart, follow the gentle audio guidance, and begin the day in stillness.',
+  },
+  {
+    title: '4. Return through the day',
+    body: 'When a reminder arrives, take three conscious breaths (or more). In the evening, sit with the Three Questions to notice where you were present.',
+  },
+];
+---
+
+<BaseLayout
+  title="Tutorials — Practicing Presence"
+  description="Video tutorials for the free Practicing Presence app: how to install it on iPhone or Android and how to use the Morning Practice, Three Breaths, and Three Questions."
+  path="/tutorials/"
+>
+  <section class="section">
+    <div class="container">
+      <h1>Tutorials</h1>
+      <p class="section__lead">
+        Short videos that walk you through installing the app and settling into
+        each practice. Prefer to watch on YouTube?&#32;
+        <a href={PLAYLIST_URL} rel="noopener">Open the full playlist</a>.
+      </p>
+
+      <div class="video-wrap">
+        <iframe
+          src={EMBED_URL}
+          title="Practicing Presence tutorial videos (YouTube playlist)"
+          loading="lazy"
+          allow="encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+      <p class="video-note">
+        Videos are embedded in YouTube&rsquo;s privacy-enhanced mode, which sets no
+        cookies until you press play.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <h2>Getting started in four steps</h2>
+      <div class="steps">
+        {
+          steps.map((s) => (
+            <article class="card">
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="center steps-cta">
+        <a class="button button--primary" href="/#download">Download the App — Free</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .video-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    max-width: 56rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: var(--teal-950);
+  }
+
+  .video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .video-note {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-top: 0.75rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.4rem;
+    margin-top: 1.75rem;
+  }
+
+  .steps-cta {
+    margin-top: 2.25rem;
+  }
+</style>

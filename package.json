@@ -1,0 +1,22 @@
+{
+  "name": "presence-app-website",
+  "version": "0.1.0",
+  "description": "Marketing and information website for the Practicing Presence app (presence.app)",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name=presence-app-website"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/open-sans": "^5.2.5",
+    "@fontsource/quicksand": "^5.2.5",
+    "astro": "^7.0.7"
+  }
+}

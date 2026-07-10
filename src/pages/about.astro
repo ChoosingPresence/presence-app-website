@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const affiliations = [
+  {
+    name: 'Choosing Presence',
+    body: 'The home of the Practice of Presence — the book, the “Awakening to Presence” course, videos, articles, and retreats by Jim Heaney. The Practicing Presence app is its daily companion.',
+    links: [{ label: 'ChoosingPresence.org', href: 'https://www.choosingpresence.org' }],
+  },
+  {
+    name: 'Brian Mueller',
+    body: 'The app and this site are maintained by Brian Mueller through B:Drive Communications, LLC. Brian is also a poet and podcaster.',
+    links: [
+      { label: 'BrianMueller.com', href: 'https://brianmueller.com' },
+      { label: 'BriansPoems.com', href: 'https://brianspoems.com' },
+    ],
+  },
+  {
+    name: 'Illuman',
+    body: 'A nonprofit organization supporting men in transformative spiritual work, whose community and mission align with the contemplative spirit of this practice.',
+    links: [{ label: 'Illuman.org', href: 'https://illuman.org' }],
+  },
+];
+---
+
+<BaseLayout
+  title="About — Practicing Presence"
+  description="How the free Practicing Presence app connects to Choosing Presence and the Practice of Presence, the book by Jim Heaney, and the people and organizations behind it."
+  path="/about/"
+>
+  <section class="section">
+    <div class="container">
+      <h1>About Practicing Presence</h1>
+      <p class="section__lead">
+        Practicing Presence — A Christian Way is a free mindfulness app for
+        iPhone, iPad, and Android. It exists for one reason: to help you pause,
+        breathe, and rest in God&rsquo;s presence throughout the day.
+      </p>
+      <p>
+        The app is intentionally simple. A guided <strong>Morning Practice</strong>&#32;
+        (10–20 minutes) begins the day in stillness. Gentle hourly reminders
+        invite <strong>three conscious breaths</strong>. And&#32;
+        <strong>three questions</strong> at day&rsquo;s end help you notice where
+        you were present — and where fear, anxiety, or stress pulled you away.
+      </p>
+      <p>
+        It is <strong>100% free</strong>, with no account or sign-up, no
+        advertisements, and no in-app purchases. It is maintained by Brian
+        Mueller through <strong>B:Drive Communications, LLC</strong>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container about-book">
+      <div>
+        <h2>The Practice of Presence</h2>
+        <p>
+          The app is the daily companion to the <strong>Practice of
+          Presence</strong>, a contemplative Christian path developed by Jim
+          Heaney and shared through&#32;
+          <a href="https://www.choosingpresence.org" rel="noopener">ChoosingPresence.org</a>.
+          The practice draws on the long Christian contemplative tradition:
+          choosing, again and again, to release fear and return to God&rsquo;s
+          peace in the present moment.
+        </p>
+        <p>
+          To go deeper, we recommend reading&#32;
+          <em>Choosing Presence: How to Access God&rsquo;s Peace and Release
+          Fear, Anxiety, and Stress</em> by Jim Heaney. All proceeds from the
+          book go to charity.
+        </p>
+        <p class="about-book__buttons">
+          <a class="button button--primary" href="https://amzn.to/3Tdmv8V" rel="noopener">
+            Get the Book on Amazon
+          </a>
+          <a class="button button--ghost" href="https://www.choosingpresence.org" rel="noopener">
+            Explore Choosing Presence
+          </a>
+        </p>
+      </div>
+      <img
+        src="/images/choosing-presence-book.jpg"
+        alt="Cover of Choosing Presence by Jim Heaney"
+        width="240"
+        height="360"
+        loading="lazy"
+        class="about-book__cover"
+      />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Sponsors &amp; Affiliations</h2>
+      <div class="affiliation-grid">
+        {
+          affiliations.map((a) => (
+            <article class="card">
+              <h3>{a.name}</h3>
+              <p>{a.body}</p>
+              <p class="affiliation-links">
+                {a.links.map((l) => (
+                  <a href={l.href} rel="noopener">
+                    {l.label}
+                  </a>
+                ))}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-book {
+    display: grid;
+    grid-template-columns: 1fr minmax(11rem, 15rem);
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .about-book__cover {
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    justify-self: center;
+  }
+
+  .about-book__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+
+  .affiliation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.4rem;
+    margin-top: 1.5rem;
+  }
+
+  .affiliation-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    .about-book {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,373 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoreBadges from '../components/StoreBadges.astro';
+
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'Practicing Presence — A Christian Way',
+  operatingSystem: 'iOS, Android',
+  applicationCategory: 'HealthApplication',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  author: { '@type': 'Organization', name: 'B:Drive Communications, LLC' },
+  url: 'https://presence.app',
+  installUrl: [
+    'https://apps.apple.com/us/app/practicing-presence/id1467007716',
+    'https://play.google.com/store/apps/details?id=com.zeek.practicingpresence',
+  ],
+});
+
+const features = [
+  {
+    title: 'Morning Practice',
+    body: 'A flexible 10–20 minute guided morning meditation to begin the day rooted in stillness, with gentle audio guidance and a hand-on-heart grounding technique.',
+  },
+  {
+    title: 'Three Breaths (or more)',
+    body: 'Optional hourly reminders invite you to pause throughout the day for three conscious breaths — a moment to return to God’s presence wherever you are.',
+  },
+  {
+    title: 'Three Questions',
+    body: 'Three simple daily reflection questions help you notice where you were present — and where fear, anxiety, or stress pulled you away.',
+  },
+  {
+    title: 'Gentle Reminders, Your Schedule',
+    body: 'Choose the window that fits your life (say, 7:00 am to 9:00 pm). Turn reminders off any time. The app adapts to your rhythm, not the other way around.',
+  },
+];
+
+const screens = [
+  { src: '/images/screens/home.jpg', alt: 'Practicing Presence home screen with Morning Practice, Three Questions, and Three Breaths circles' },
+  { src: '/images/screens/meditation.jpg', alt: 'Meditation timer screen with a heart illustration and the words “Experience the spirit within”' },
+  { src: '/images/screens/peace.jpg', alt: 'Meditation screen with the words “The power in the peace” over a soft green background' },
+  { src: '/images/screens/information.jpg', alt: 'Information screen with notification start and end times and links' },
+];
+---
+
+<BaseLayout
+  title="Practicing Presence — A Christian Way | Free Christian Mindfulness App"
+  description="Practicing Presence is a 100% free Christian mindfulness app. Pause, breathe, and rest in God's presence — no account, no ads, no in-app purchases. Available for iPhone and Android."
+  path="/"
+>
+  <script type="application/ld+json" set:html={structuredData} is:inline />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">A Christian Way</p>
+        <h1>Pause. Breathe. Rest in God&rsquo;s presence.</h1>
+        <p class="hero__lead">
+          Practicing Presence is a simple companion for contemplative Christian
+          practice — a guided morning meditation, three conscious breaths through
+          the day, and three questions each evening.
+        </p>
+        <StoreBadges />
+        <p class="hero__trust">
+          <strong>100% free.</strong> No account or sign-up. No ads. No in-app purchases.
+        </p>
+      </div>
+      <div class="hero__phone">
+        <div class="phone-frame">
+          <img
+            src="/images/screens/home.jpg"
+            alt="Practicing Presence app home screen"
+            width="320"
+            height="696"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Truly free strip -->
+  <section class="section section--tint" aria-labelledby="free-heading">
+    <div class="container center">
+      <h2 id="free-heading">Free means free</h2>
+      <p class="section__lead lead-center">
+        This app is a gift. It costs nothing, shows nothing, and asks for nothing.
+      </p>
+      <ul class="free-list">
+        <li>No payment, ever</li>
+        <li>No account or sign-up</li>
+        <li>No advertisements</li>
+        <li>No in-app purchases</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" aria-labelledby="features-heading">
+    <div class="container">
+      <h2 id="features-heading">A simple rhythm for the day</h2>
+      <p class="section__lead">
+        The app follows the Practice of Presence taught in the book&#32;
+        <em>Choosing Presence</em>: begin in stillness, return often, reflect gently.
+      </p>
+      <div class="feature-grid">
+        {
+          features.map((f) => (
+            <article class="card">
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section class="section section--deep" aria-labelledby="screens-heading">
+    <div class="container">
+      <h2 id="screens-heading" class="center">A glimpse inside</h2>
+      <div class="screen-row">
+        {
+          screens.map((s) => (
+            <figure class="screen">
+              <img src={s.src} alt={s.alt} width="240" height="522" loading="lazy" />
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Choosing Presence roots -->
+  <section class="section" aria-labelledby="roots-heading">
+    <div class="container roots">
+      <div class="roots__book">
+        <img
+          src="/images/choosing-presence-book.jpg"
+          alt="Cover of the book Choosing Presence by Jim Heaney"
+          width="260"
+          height="390"
+          loading="lazy"
+        />
+      </div>
+      <div>
+        <h2 id="roots-heading">Rooted in <em>Choosing Presence</em></h2>
+        <p class="section__lead">
+          Practicing Presence is the companion app to the Practice of Presence — a
+          contemplative Christian path described in the book&#32;
+          <em>Choosing Presence: How to Access God&rsquo;s Peace and Release Fear,
+          Anxiety, and Stress</em> by Jim Heaney.
+        </p>
+        <p>
+          To go deeper with the practice, we recommend reading the book and
+          exploring the courses, videos, and retreats at Choosing Presence.
+          All proceeds from the book go to charity.
+        </p>
+        <p class="roots__buttons">
+          <a class="button button--primary" href="https://amzn.to/3Tdmv8V" rel="noopener">
+            Get the Book
+          </a>
+          <a class="button button--ghost" href="https://www.choosingpresence.org" rel="noopener">
+            Visit ChoosingPresence.org
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutorials teaser -->
+  <section class="section section--tint" aria-labelledby="learn-heading">
+    <div class="container center">
+      <h2 id="learn-heading">New here? We&rsquo;ll walk you through it.</h2>
+      <p class="section__lead lead-center">
+        Short video tutorials show you how to install the app and make the most
+        of each practice.
+      </p>
+      <a class="button button--primary" href="/tutorials/">Watch the Tutorials</a>
+    </div>
+  </section>
+
+  <!-- Download CTA -->
+  <section id="download" class="section section--deep" aria-labelledby="download-heading">
+    <div class="container center download">
+      <img
+        src="/images/app-icon.png"
+        alt=""
+        width="88"
+        height="88"
+        loading="lazy"
+        class="download__icon"
+      />
+      <h2 id="download-heading">Begin practicing presence today</h2>
+      <p class="section__lead center-lead">
+        Free on iPhone, iPad, and Android. No account needed — download and breathe.
+      </p>
+      <div class="download__badges">
+        <StoreBadges />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    background: linear-gradient(160deg, #eef7ee 0%, var(--teal-100) 55%, #cfe4de 100%);
+    overflow: hidden;
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 2rem;
+    padding-block: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero__lead {
+    font-size: 1.2rem;
+    color: var(--ink-muted);
+    max-width: 34rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__trust {
+    margin-top: 1.1rem;
+    color: var(--teal-800);
+  }
+
+  .hero__phone {
+    display: flex;
+    justify-content: center;
+  }
+
+  .phone-frame {
+    border-radius: 2.4rem;
+    border: 10px solid var(--teal-950);
+    box-shadow: 0 24px 60px rgba(18, 59, 62, 0.35);
+    overflow: hidden;
+    max-width: 300px;
+  }
+
+  .phone-frame img {
+    display: block;
+  }
+
+  /* Free list */
+  .free-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .free-list li {
+    background: var(--white);
+    border: 2px solid var(--sage);
+    color: var(--teal-800);
+    font-family: var(--font-display);
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.5rem 1.2rem;
+  }
+
+  /* Features */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+    gap: 1.4rem;
+    margin-top: 2rem;
+  }
+
+  /* Screenshots */
+  .screen-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.4rem;
+    margin-top: 2.25rem;
+  }
+
+  .screen {
+    margin: 0;
+  }
+
+  .screen img {
+    border-radius: 1.4rem;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Roots */
+  .roots {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .roots__book img {
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+  }
+
+  .roots__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 1.25rem;
+  }
+
+  /* Download */
+  .download__icon {
+    margin: 0 auto 1rem;
+    border-radius: 20px;
+  }
+
+  .center-lead,
+  .lead-center {
+    margin-inline: auto;
+  }
+
+  .download__badges {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 800px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .hero__lead {
+      margin-inline: auto;
+    }
+
+    .hero__copy :global(.badges) {
+      justify-content: center;
+    }
+
+    .roots {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .roots__book {
+      display: flex;
+      justify-content: center;
+    }
+
+    .roots__buttons {
+      justify-content: center;
+    }
+  }
+</style>

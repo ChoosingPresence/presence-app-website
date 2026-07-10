@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found — Practicing Presence"
+  description="That page could not be found. Return to the Practicing Presence home page."
+  path="/404/"
+>
+  <section class="section center">
+    <div class="container">
+      <h1>Take a breath — that page isn&rsquo;t here.</h1>
+      <p class="section__lead lead-center">
+        The page you&rsquo;re looking for may have moved. Let&rsquo;s return to
+        the present moment.
+      </p>
+      <p>
+        <a class="button button--primary" href="/">Back to Home</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lead-center {
+    margin-inline: auto;
+  }
+</style>

@@ -1,0 +1,236 @@
+/* ---------------------------------------------------------------------------
+   Practicing Presence — global styles
+   Palette drawn from the app itself: deep teal gradients, sage green (#96BFA7,
+   the app-icon background), soft leaf green, and warm cream.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* Brand colors */
+  --teal-950: #123b3e;
+  --teal-800: #1c5a5e;
+  --teal-600: #2e7d82;
+  --teal-500: #3b8d92;
+  --teal-100: #dcedea;
+  --sage: #96bfa7;
+  --sage-dark: #5f8f74;
+  --leaf: #d8df9a;
+  --cream: #f7faf4;
+  --white: #ffffff;
+
+  /* Semantic */
+  --ink: #1b3a3c;
+  --ink-muted: #48696b;
+  --surface: var(--cream);
+  --surface-card: var(--white);
+
+  /* Type */
+  --font-display: 'Quicksand', 'Avenir Next', 'Trebuchet MS', sans-serif;
+  --font-body: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Layout */
+  --max-width: 72rem;
+  --radius: 1.25rem;
+  --radius-sm: 0.75rem;
+  --shadow: 0 10px 30px rgba(18, 59, 62, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--teal-800);
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--teal-600);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--teal-800);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--teal-800);
+  color: var(--white);
+  padding: 0.6rem 1rem;
+  z-index: 100;
+  border-radius: 0 0 var(--radius-sm) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+  color: var(--white);
+}
+
+/* Layout helpers */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: clamp(1.1rem, 4vw, 2rem);
+}
+
+.section {
+  padding-block: clamp(3rem, 8vw, 5.5rem);
+}
+
+.section--tint {
+  background: linear-gradient(180deg, #eef5ee 0%, var(--teal-100) 100%);
+}
+
+.section--deep {
+  background: linear-gradient(160deg, var(--teal-800) 0%, var(--teal-600) 70%, var(--sage) 160%);
+  color: var(--white);
+}
+
+.section--deep h2,
+.section--deep h3 {
+  color: var(--white);
+}
+
+.section__lead {
+  max-width: 44rem;
+  color: var(--ink-muted);
+  font-size: 1.125rem;
+}
+
+.section--deep .section__lead {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  padding: 0.8rem 1.7rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.button--primary {
+  background: var(--teal-600);
+  color: var(--white);
+}
+
+.button--primary:hover {
+  background: var(--teal-800);
+  color: var(--white);
+}
+
+.button--sage {
+  background: var(--sage);
+  color: var(--teal-950);
+}
+
+.button--sage:hover {
+  background: var(--sage-dark);
+  color: var(--white);
+}
+
+.button--ghost {
+  border: 2px solid currentColor;
+  color: var(--teal-800);
+}
+
+.section--deep .button--ghost {
+  color: var(--white);
+}
+
+/* Cards */
+.card {
+  background: var(--surface-card);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+/* Utility */
+.center {
+  text-align: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .button,
+  .button:hover {
+    transition: none;
+    transform: none;
+  }
+}
