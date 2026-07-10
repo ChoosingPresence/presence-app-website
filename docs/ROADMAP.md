@@ -5,14 +5,22 @@ just a starting point for prioritization conversations.
 
 ## P0 — Finish what's already in motion
 
-1. **Fix the `www.practicingpresence.app` redirect** — currently returns an
-   empty `Location` header (see docs/AUDIT.md). Low effort, visible bug.
+1. ~~Fix the `www.practicingpresence.app` redirect~~ **Done 2026-07-10.**
 2. ~~Connect Git integration~~ **Done 2026-07-10** — pushes to `main` now
    auto-deploy.
-3. **Purge the cached `robots.txt`** (or wait out its TTL) so the sitemap URL
-   inside it isn't stale.
-4. **Revoke** any Cloudflare API tokens created for manual deploys once no
+3. **Revoke** any Cloudflare API tokens created for manual deploys once no
    longer needed — they're short-lived by design, but tidy up regardless.
+
+## Deprioritized
+
+- **Stale `robots.txt` sitemap URL.** Thoroughly investigated 2026-07-10 —
+  not a normal cache issue (purge and "Purge Everything" both had no effect),
+  and no dashboard setting was found to fix it directly. Looks like a frozen
+  one-time snapshot inside Cloudflare's AI Crawl Control feature. Low impact,
+  so parked rather than pursued further. See docs/AUDIT.md for the full
+  investigation trail. If picked back up, contacting Cloudflare support
+  directly is the most promising next step, since the behavior isn't exposed
+  as a user-facing setting.
 
 ## P1 — Near-term, low effort / high value
 

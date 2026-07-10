@@ -59,22 +59,38 @@ tutorial videos, and connects visitors to Choosing Presence and the book
 | Secrets in repo or git history | None found |
 | Responsive (320px–1920px, all 4 pages) | No horizontal scroll or overflow anywhere; verified via browser automation, not just visual inspection |
 
-## Known open issues (not yet fixed)
+## Known open issues
 
-1. **`www.practicingpresence.app` redirects with an empty `Location` header.**
-   The redirect rule's `wildcard_replace(http.request.full_uri, "https://www.*", "https://${1}")`
-   expression isn't evaluating correctly — it's fixed in scope (only fires for
-   `www`) but the target URL it produces is empty. Needs a look at the actual
-   rule expression in the dashboard. Not blocking — the apex domain (the
-   canonical URL used everywhere) works correctly.
-2. **`robots.txt` serves a stale cached sitemap URL.** Even after redeploying
-   with the corrected domain, the live `/robots.txt` shows an old sitemap URL
-   underneath Cloudflare's own injected "Managed robots.txt" content-signals
-   block. This looks like a caching layer specific to that Cloudflare feature,
-   separate from normal edge cache — a `purge_cache` API call needs **Cache
-   Purge** permission, which wasn't granted on the working token. Cosmetic
-   only; doesn't affect crawling (search engines discover sitemaps via other
-   means too).
+1. ~~`www.practicingpresence.app` redirects with an empty `Location` header.~~
+   **Resolved 2026-07-10.** The broken `wildcard_replace()`-based rule was
+   replaced with a static redirect (Hostname equals `www.practicingpresence.app`
+   → static target `https://practicingpresence.app`, 301). Verified: 301 with
+   correct `Location` header, follows through to 200.
+2. **`robots.txt` serves a stale, frozen sitemap URL — deprioritized, likely
+   not fixable from the dashboard.** Live `/robots.txt` shows
+   `Sitemap: https://presence.app/sitemap-index.xml` (the old, wrong domain)
+   underneath Cloudflare's injected "AI Crawl Control" / Content Signals
+   block, even though the actual origin `public/robots.txt` has said
+   `practicingpresence.app` since 2026-07-10. Investigated thoroughly:
+   - Targeted `Custom Purge` of the URL: no effect.
+   - Full zone `Purge Everything`: no effect — response still showed
+     `cf-cache-status: HIT` with an unchanged ETag afterward, meaning this
+     isn't in the normal CDN cache at all.
+   - Toggling the "Manage Robots.txt" setting off/on: no effect (same ETag
+     before and after).
+   - No dashboard UI could be found to directly edit the injected content or
+     force a re-fetch from origin.
+
+   Conclusion: this looks like a one-time snapshot Cloudflare's AI Crawl
+   Control feature took of the origin `robots.txt` (probably when the feature
+   was first enabled on the zone), served indefinitely thereafter,
+   independent of both normal cache and the live origin content. No
+   user-facing fix was found. Brian has decided to **deprioritize** this —
+   impact is low (a sitemap pointer to an unrelated, non-functional domain;
+   doesn't block crawling, search engines discover the sitemap via other
+   means, e.g. direct Search Console submission). If revisited: contacting
+   Cloudflare support directly is the most likely path to an actual fix,
+   since the behavior isn't exposed as a dashboard setting.
 3. ~~Git integration is not connected.~~ **Resolved 2026-07-10.** Brian
    connected it via the dashboard (required a human to authorize the GitHub
    App — can't be done via API/CLI). Verified working: the very next push

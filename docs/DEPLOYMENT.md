@@ -108,15 +108,15 @@ only needed again if the domain is ever detached or a new one is added):
 
 ## Known open issues
 
-- **`www.practicingpresence.app`** redirects with an empty `Location` header —
-  the redirect rule's `wildcard_replace()` expression isn't evaluating
-  correctly. Needs a fix in Rules → Redirect Rules (Cloudflare dashboard);
-  requires Zone-level Rules edit access.
-- **`robots.txt`** served live shows a stale cached sitemap URL from an old
-  build, even after redeploys — likely Cloudflare's "Managed robots.txt"
-  (AI-bot-blocking overlay) feature caching the origin response separately
-  from normal edge cache. Fix: purge cache for `/robots.txt` specifically, or
-  wait for its own TTL. Requires a token with **Cache Purge** permission.
+- **`robots.txt`** served live shows a stale, frozen sitemap URL
+  (`presence.app` instead of `practicingpresence.app`) underneath
+  Cloudflare's injected AI Crawl Control content-signals block. Confirmed
+  this is *not* a normal cache issue — targeted purge, full zone "Purge
+  Everything," and toggling the Manage Robots.txt setting all had no effect
+  (`cf-cache-status: HIT` with an unchanged ETag throughout). No dashboard
+  setting was found to edit or refresh it. **Deprioritized** — low impact
+  (see docs/AUDIT.md for the full investigation). If revisited, contact
+  Cloudflare support directly.
 
 ## Post-deploy checklist
 
