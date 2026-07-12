@@ -186,17 +186,51 @@ even when purges don't touch them).
 **To re-check**: `curl -sD - "https://practicingpresence.app/?cb=$(date +%s)" -o /dev/null | grep -i etag` —
 if the ETag differs from `3af2fb23a51413e1b0360e7c15147441`, the cache has
 cleared; re-verify the full page content and all interactive features from
-there. If it's still stuck after another day or two, the community support
-form (https://developers.cloudflare.com/support/) is the next step, or
-consider a paid plan for direct ticket support if this becomes a recurring
-problem.
+there.
+
+### Update (2026-07-12): full zone deletion/recreation attempted, did not fix it
+
+Waited a full day (per the decision above); the ETag was unchanged, so tried
+the most drastic self-service option available: **fully deleted the
+`practicingpresence.app` zone and recreated it** (new nameservers issued,
+updated at the registrar (Namecheap), zone confirmed Active — same zone ID
+was reissued by Cloudflare, suggesting a soft-delete/reactivation rather than
+a truly from-scratch zone, though the nameserver/DNS layer was genuinely
+cycled). Also fully detached and reattached the Pages custom domain a second
+time afterward (new `domain_id` both times, confirmed via API — a genuinely
+fresh binding each time).
+
+**Result: no effect.** Same byte-for-byte content, same ETag
+(`3af2fb23a51413e1b0360e7c15147441`), confirmed via multiple independent
+vantage points — not just repeated `curl` calls with cache-busting query
+strings and forced fresh DNS resolution (`--resolve`), but also a
+third-party fetch proxy (allorigins.win) entirely unrelated to this
+session's network path, which returned the identical stale content. This
+rules out the staleness being any kind of local/session-side artifact — it
+is genuinely Cloudflare's infrastructure serving frozen content to everyone,
+survived a full zone rebuild.
+
+**Filed with Cloudflare community support**: 2026-07-12,
+https://community.cloudflare.com/t/edge-cache-serving-frozen-stale-content-survived-full-zone-deletion-recreation/939328
+— includes exact repro steps (curl commands comparing the custom domain vs.
+the Pages project's own `.pages.dev` subdomain, which correctly serves fresh
+content), a Ray ID (`a19f41439cb4b002-ORD`) for Cloudflare to trace
+internally, and the full list of remediation attempts above. No paid plan,
+so this is the community form rather than a direct ticket — response time
+unknown. **Check this thread for replies before doing anything else on this
+issue.** (Note: the forum itself sits behind a Cloudflare bot-check page, so
+it can't be fetched/monitored programmatically — a human needs to check it.)
 
 ## Known open issues
 
 0. **Stuck edge cache serving stale content at the custom domain — ACTIVE,
-   HIGHEST PRIORITY.** See the full "Stuck edge cache" investigation above.
-   Waiting until 2026-07-11+ to re-check before considering the community
-   support form. Check the ETag first thing next session.
+   HIGHEST PRIORITY.** See the full "Stuck edge cache" investigation and its
+   2026-07-12 update above. Survived a full zone deletion/recreation.
+   **Filed with Cloudflare community support 2026-07-12**:
+   https://community.cloudflare.com/t/edge-cache-serving-frozen-stale-content-survived-full-zone-deletion-recreation/939328
+   — check that thread for replies (can't be monitored programmatically,
+   sits behind a bot-check page) before trying anything further yourself.
+   Check the ETag first thing next session either way.
 1. ~~`www.practicingpresence.app` redirects with an empty `Location` header.~~
    **Resolved 2026-07-10.** The broken `wildcard_replace()`-based rule was
    replaced with a static redirect (Hostname equals `www.practicingpresence.app`
