@@ -78,7 +78,10 @@ const screens = [
   <section class="hero">
     <div class="container hero__inner">
       <div class="hero__copy">
-        <p class="hero__eyebrow">A Christian Way</p>
+        <p class="hero__eyebrow"><span
+          class="hero__eyebrow-name">Practicing Presence</span>&#32;<span
+          class="hero__eyebrow-sep" aria-hidden="true">|</span>&#32;<span
+          class="hero__eyebrow-tag">A Christian Way</span></p>
         <h1>Pause. Breathe. Rest in God&rsquo;s presence.</h1>
         <p class="hero__lead">
           A simple companion for contemplative Christian practice — a guided
@@ -290,13 +293,60 @@ const screens = [
     padding-block: clamp(2.5rem, 7vw, 5rem);
   }
 
+  /* The app's full name as a lockup. The `&#32;` entities around the separator
+     are deliberate: Astro collapses whitespace at line breaks next to inline
+     tags, and without them the halves run together when copied and the browser
+     has no legitimate place to break the line on narrow screens. */
   .hero__eyebrow {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    /* Sized to survive the narrowest column it ever occupies — the two-column
+       hero at ~810px viewport gives the copy side only ~405px. */
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero__eyebrow-name {
+    font-weight: 700;
+  }
+
+  .hero__eyebrow-tag {
+    opacity: 0.85;
+  }
+
+  /* Neither half may split internally — otherwise a narrow column strands a
+     single word ("…CHRISTIAN / WAY") on its own line. If the line has to
+     break, it breaks cleanly between the two halves. */
+  .hero__eyebrow-name,
+  .hero__eyebrow-tag {
+    white-space: nowrap;
+  }
+
+  .hero__eyebrow-sep {
+    /* Real spaces already sit either side; this just opens the gap a little. */
+    margin-inline: 0.2em;
+    opacity: 0.45;
+    font-weight: 400;
+  }
+
+  /* On phones the full lockup lands about 2px over the container. Tightening
+     the tracking a little buys ~15px, which keeps the divider rather than
+     dropping it — 360px and 375px devices both hold one clean line. */
+  @media (max-width: 560px) {
+    .hero__eyebrow {
+      letter-spacing: 0.05em;
+    }
+  }
+
+  /* Below ~360px even that won't fit; drop the divider so the break falls
+     between two whole phrases instead of leaving a trailing bar. */
+  @media (max-width: 359px) {
+    .hero__eyebrow-sep {
+      display: none;
+    }
   }
 
   .hero__lead {
