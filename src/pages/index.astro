@@ -96,18 +96,14 @@ const screens = [
       </div>
       <div class="hero__phone">
         <DeviceFrame device="iphone" label="Practicing Presence running on iPhone" class="hero__device">
-          <video
-            data-hero-video
-            src="/videos/app-preview.mp4"
-            poster="/videos/app-preview-poster.jpg"
-            width="332"
-            height="720"
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            aria-label="A short silent preview of the Practicing Presence app in use"
-          ></video>
+          <Image
+            src={iphoneHome}
+            alt="The Practicing Presence home screen, with Morning Practice, Three Questions and Three Breaths as overlapping circles"
+            widths={[280, 560]}
+            sizes="(max-width: 800px) 72vw, 280px"
+            loading="eager"
+            fetchpriority="high"
+          />
         </DeviceFrame>
       </div>
     </div>
@@ -278,28 +274,6 @@ const screens = [
     </div>
   </section>
 </BaseLayout>
-
-<script>
-  // Start the hero preview only when motion is welcome. The poster frame
-  // stands in otherwise, and `preload="metadata"` keeps the 2.4MB file off
-  // the critical path until we actually ask for it.
-  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
-  const stillPreferred = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  function sync() {
-    if (!video) return;
-    if (stillPreferred.matches) {
-      video.pause();
-    } else {
-      video.play().catch(() => {
-        /* Autoplay refused — the poster frame is a fine fallback. */
-      });
-    }
-  }
-
-  sync();
-  stillPreferred.addEventListener('change', sync);
-</script>
 
 <style>
   /* Hero */

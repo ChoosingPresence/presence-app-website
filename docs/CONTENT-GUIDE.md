@@ -69,21 +69,23 @@ smaller frames, or the bezels look like thick rubber rims).
 > `.my-class { width: … }` rule in the page's `<style>` will silently not
 > apply. Wrap it: `.parent :global(.my-class) { width: … }`.
 
-## Video
+## Store badges
 
-`public/videos/app-preview.mp4` is a 7-second silent loop cut from the App
-Store preview (the Morning Practice segment, source seconds 22.6–29.6),
-compressed to ~1.6MB with macOS's built-in `avconvert`:
+`public/images/badges/app-store.svg` and `google-play.svg` are Apple's and
+Google's **official** badge artworks, unmodified — both vendors require their
+own asset rather than a recreation, so don't redraw them.
 
-```bash
-avconvert -s "<source>.mp4" -o out.m4v -p PresetAppleM4V720pHD \
-  --start 22.6 --duration 7 --replace
-```
+Neither artwork has built-in padding (both fill their viewBox edge to edge), so
+matching the CSS **height** matches the visual height. `StoreBadges.astro` sets
+`height: 44px; width: auto` and lets each width follow its own aspect ratio:
 
-The preset only writes `.m4v`; rename to `.mp4` afterwards so the server sends
-`video/mp4` (identical container). It needs `media-src 'self'` in the CSP, and
-it only autoplays when the visitor hasn't asked for reduced motion — the poster
-frame stands in otherwise.
+| Badge | Source viewBox | Aspect | At 44px tall |
+| --- | --- | --- | --- |
+| App Store | 119.66 × 40 | 2.9916 : 1 | 132 × 44 |
+| Google Play | 239.17 × 70.87 | 3.3748 : 1 | 148 × 44 |
+
+Never set a width on both to "make them match" — that distorts one of them and
+breaks the vendors' brand rules. Height is the single source of truth.
 
 ## Style / brand
 
@@ -122,15 +124,6 @@ frame stands in otherwise.
   print((max(l1,l2)+.05)/(min(l1,l2)+.05))
   "
   ```
-
-## Phone screenshot frame
-
-- `.phone-frame` (global utility class in `global.css`) draws the device
-  bezel around any screenshot — used for the homepage hero image and the
-  screenshot gallery (`.phone-frame--sm` modifier for the smaller gallery
-  size). Wrap any new screenshot image in `<div class="phone-frame">...`
-  (or `phone-frame phone-frame--sm` for thumbnail-sized ones) rather than
-  styling borders/shadows directly on the `<img>`.
 
 ## Header (nav, theme toggle, mobile menu)
 

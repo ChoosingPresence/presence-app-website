@@ -154,8 +154,15 @@ Three Questions framing before it was rewritten.
 - Added a device-family strip (iPad / iPhone / Android) so the "iPhone, iPad and
   Android" claim is demonstrated rather than asserted.
 - The screenshot gallery became a scroll-snap carousel.
-- Added a 7-second silent hero video (~1.6MB) cut from the App Store preview,
-  and the 4.6★/124-ratings social proof.
+- Added the 4.6★/124-ratings social proof.
+- A 7-second silent hero video was added and then **removed the same day** at
+  Brian's request — he preferred a static home screen in the hero. The video,
+  its poster, the `media-src 'self'` CSP directive and the autoplay script all
+  came back out; the hero is now the v1.8.6 home-screen screenshot.
+- The hand-drawn SVG store badges were replaced with **Apple's and Google's
+  official badge artwork** (`public/images/badges/`). Both fill their viewBox
+  with no padding, so a shared `height: 44px` with `width: auto` gives matched
+  visual heights — 132×44 and 148×44 at their true aspect ratios.
 
 **Mobile length went *down* despite all the additions** — 8,263px → 7,882px.
 The carousel took the gallery from ~2,100px to 705px, and a single-row device

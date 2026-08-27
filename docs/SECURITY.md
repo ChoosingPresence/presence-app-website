@@ -16,7 +16,7 @@ Served by Cloudflare Pages on every response:
 
 | Header | Value / intent |
 | --- | --- |
-| `Content-Security-Policy` | `default-src 'none'` baseline; only self-hosted images/video/CSS/fonts; `frame-src` limited to `youtube-nocookie.com`; `frame-ancestors 'none'`; `base-uri 'self'` |
+| `Content-Security-Policy` | `default-src 'none'` baseline; only self-hosted images/CSS/fonts; `frame-src` limited to `youtube-nocookie.com`; `frame-ancestors 'none'`; `base-uri 'self'` |
 | `Strict-Transport-Security` | 1 year, includeSubDomains, preload (`.app` TLD is HSTS-preloaded anyway) |
 | `X-Content-Type-Options` | `nosniff` |
 | `X-Frame-Options` | `DENY` (legacy complement to frame-ancestors) |
@@ -55,8 +55,9 @@ Notes:
 - 4 runtime-free dependencies (Astro, sitemap integration, two font packages);
   everything is build-time only — nothing they ship runs in visitors' browsers
   except generated CSS/fonts.
-- `media-src 'self'` was added on 2026-08-27 for the hero preview video. It
-  permits same-origin media only — no third-party video hosts.
+- `media-src` is deliberately **absent** — `default-src 'none'` therefore blocks
+  all audio/video. A hero preview video was briefly added on 2026-08-27 and
+  removed the same day; if video ever returns, `media-src 'self'` goes back.
 - `package-lock.json` is committed; run `npm audit` before releases. Last run
   2026-08-27: **0 vulnerabilities**. (An audit that day found 6 — five high —
   all build-time only, in Astro's toolchain: `postcss`, `sharp`, `svgo`,
