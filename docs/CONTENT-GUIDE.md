@@ -17,7 +17,7 @@
 | App Store           | `src/components/StoreBadges.astro` (`APP_STORE_URL`)       |
 | Google Play         | `src/components/StoreBadges.astro` (`PLAY_STORE_URL`)      |
 | YouTube playlist    | `src/pages/tutorials.astro` (`PLAYLIST_ID`)                |
-| Book (Amazon)       | `https://amzn.to/3zqQGKl` — used in `index.astro` + `about.astro` (ASIN 1618521268) |
+| Book (Amazon)       | `https://amzn.to/4zIfBcv` — used in `index.astro` + `about.astro` (ASIN 1618521268) |
 | ChoosingPresence.org, BrianMueller.com, BriansPoems.com, Illuman.org | `Footer.astro` + `about.astro` |
 
 ## Images
