@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-    "@fontsource/open-sans": "^5.2.5",
-    "@fontsource/quicksand": "^5.2.5",
-    "astro": "^7.0.7"
+    "@fontsource/open-sans": "^5.3.0",
+    "@fontsource/quicksand": "^5.3.0",
+    "astro": "^7.2.8"
   }
 }

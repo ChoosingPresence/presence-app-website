@@ -26,6 +26,7 @@
   --accent: var(--sage-dark);
   --link: var(--teal-600);
   --link-hover: var(--teal-800);
+  --star: #c8891f;
   --border-subtle: rgba(28, 90, 94, 0.12);
   --shadow: 0 10px 30px rgba(18, 59, 62, 0.12);
   --hero-grad-1: #eef7ee;
@@ -60,6 +61,7 @@
     --accent: #c3e6a9;
     --link: #5fb3b8;
     --link-hover: #7bd0d4;
+    --star: #f0c064;
     --border-subtle: rgba(255, 255, 255, 0.14);
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
     --hero-grad-1: #12292a;
@@ -287,27 +289,8 @@ img {
   }
 }
 
-/* Phone screenshot frame — reused for the hero image and screenshot gallery */
-.phone-frame {
-  display: inline-block;
-  border-radius: 2.4rem;
-  border: 10px solid var(--teal-950);
-  box-shadow: 0 24px 60px rgba(18, 59, 62, 0.35);
-  overflow: hidden;
-  max-width: 300px;
-  line-height: 0;
-}
-
-.phone-frame img {
-  display: block;
-}
-
-.phone-frame--sm {
-  border-radius: 1.6rem;
-  border-width: 7px;
-  max-width: 240px;
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
-}
+/* Device frames live in src/components/DeviceFrame.astro — one frame per
+   real device (iPhone / iPad / Pixel) rather than a single generic box. */
 
 /* Utility */
 .center {

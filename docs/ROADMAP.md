@@ -8,36 +8,27 @@ just a starting point for prioritization conversations.
 1. ~~Fix the `www.practicingpresence.app` redirect~~ **Done 2026-07-10.**
 2. ~~Connect Git integration~~ **Done 2026-07-10** — pushes to `main` now
    auto-deploy.
-3. **Check the Cloudflare community support thread, and whether the stuck
-   edge cache has cleared.** Filed 2026-07-12 after a full zone
-   deletion/recreation also failed to clear it:
-   https://community.cloudflare.com/t/edge-cache-serving-frozen-stale-content-survived-full-zone-deletion-recreation/939328
-   (check manually — it sits behind a bot-check page, can't be monitored
-   programmatically). Quick ETag check: `curl -sD - "https://practicingpresence.app/?cb=$(date +%s)" -o /dev/null | grep -i etag`
-   — if it's no longer `3af2fb23a51413e1b0360e7c15147441`, it's cleared;
-   re-verify the site fully from there. See docs/AUDIT.md's "Stuck edge
-   cache" section for the complete history.
-4. **Manually click-test dark mode and the mobile hamburger menu** in a real
-   browser (toggle button, menu open/close, both themes, a few breakpoints)
-   — blocked on #3 above until the live site reflects the current deploy.
-   This was implemented and verified via build output/contrast math/logic
-   tracing but not via live browser interaction — the Claude in Chrome
-   extension was unreachable that session. See docs/AUDIT.md's "Dark mode /
-   hamburger menu implementation" section for exactly what was and wasn't
-   verified.
+3. ~~Stuck edge cache serving stale content~~ **Resolved 2026-07-12.** Root
+   cause turned out not to be a cache at all: there were **two Pages projects
+   claiming `practicingpresence.app`**, one left in a failed state by an
+   earlier attempt. Deleting the duplicate fixed it instantly. Everything
+   before that — five cache purges, a full zone delete/recreate, two
+   custom-domain rebinds — was chasing the wrong layer. The stale
+   `robots.txt` had the same cause and cleared at the same time.
+4. ~~Manually click-test dark mode and the mobile hamburger menu~~
+   **Done 2026-08-27.** Driven live in a browser: menu opens/closes with
+   correct `aria-expanded` and label, theme toggle flips `data-theme` and
+   persists to `localStorage`. Both correct.
 5. **Revoke** any Cloudflare API tokens created for manual work once no
    longer needed — they're short-lived by design, but tidy up regardless.
-
-## Deprioritized
-
-- **Stale `robots.txt` sitemap URL.** Thoroughly investigated 2026-07-10 —
-  not a normal cache issue (purge and "Purge Everything" both had no effect),
-  and no dashboard setting was found to fix it directly. Looks like a frozen
-  one-time snapshot inside Cloudflare's AI Crawl Control feature. Low impact,
-  so parked rather than pursued further. See docs/AUDIT.md for the full
-  investigation trail. If picked back up, contacting Cloudflare support
-  directly is the most promising next step, since the behavior isn't exposed
-  as a user-facing setting.
+6. **Keep the site in step with the app.** The August audit found the site
+   describing practices the app no longer had — wrong Morning Practice
+   durations, and the Three Questions framed as an evening reflection when
+   they're an hourly renewal. Re-check `docs/CONTENT-GUIDE.md`'s "Facts the
+   site asserts" against real screenshots on every app feature release.
+7. **Update the App Store description.** It still says the Morning Practice
+   starts "at 10 minutes, working up to 20" — v1.8.6 offers 15, 20 or
+   open-ended. Same drift as the site had; needs fixing in App Store Connect.
 
 ## P1 — Near-term, low effort / high value
 
@@ -65,11 +56,10 @@ just a starting point for prioritization conversations.
 
 ## P2 — Content & engagement
 
-10. **Surface the App Store rating.** The app has 4.7★ from 112 ratings on
-    iOS — that's real social proof currently invisible on the site. A small
-    "4.7★ on the App Store" badge near the download buttons would help
-    conversion. (Needs periodic manual updates unless pulled from an API —
-    keep it simple, hardcode and revisit occasionally.)
+10. ~~Surface the App Store rating.~~ **Done 2026-08-27** — 4.6★ from 124
+    ratings now shows under the hero download buttons, and as JSON-LD
+    `aggregateRating` for search results. Hardcoded in `index.astro`; worth
+    refreshing occasionally.
 11. **"What's new" / release notes.** The app updates periodically; a short
     changelog section (even just linking to App Store release notes) gives
     return visitors and search engines fresh content to index.

@@ -114,18 +114,84 @@ things like a click target being visually misaligned or a transition looking
 janky. Recommend an actual click-through in both themes, at a few
 breakpoints, before considering this fully done.
 
+## Second audit and v1.8.6 content pass (2026-08-27)
+
+A full audit against app **v1.8.6**, then the fixes. The headline finding was
+not technical: the site was **factually describing practices the app no longer
+had**. Someone reading the site and then opening the app met something
+different from what they'd been promised.
+
+**Content — the site had drifted badly from the app:**
+
+- The **Three Questions** were described as an evening reflection
+  ("three questions each evening", "at day's end"). The app labels them
+  *(hourly renewal)* — three questions asked one per breath, to gauge
+  spiritual progress. Nothing about them is tied to evening. Wrong in four
+  places across three pages.
+- **Three Breaths** still carried the old *(or more)* label; v1.8.6 renamed it
+  *(for presence)*. The site also undersold it as a gentle nudge, where the app
+  frames it as a response to rising anxiety, practiced hourly 8am–8pm.
+- **Morning Practice** was advertised as "10–20 minutes", with tutorials
+  telling readers to "Choose 10, 15, or 20 minutes". v1.8.6 offers **15, 20 or
+  open-ended** — a new user would have hunted for a button that no longer
+  exists.
+- The notification-window example said 7:00am–9:00pm; the app defaults to
+  **8:00am–8:00pm**, which is the window the practice is actually built around.
+- The in-app **Choosing Presence Videos** library wasn't mentioned anywhere.
+
+All corrected, with copy taken from the app's own wording. Brian confirmed the
+Three Questions framing before it was rewritten.
+
+**Design and assets:**
+
+- Every screenshot was pre-1.8.6 and visibly contradicted the app. Replaced
+  from `Assets/screenshots/`, moved into `src/assets/` so Astro's image
+  pipeline emits multi-width WebP (190KB JPEG → 20KB WebP at display size).
+- The old `.phone-frame` was a rounded border, not a device, and had no tablet
+  variant at all. Replaced with `DeviceFrame.astro` — real CSS frames for
+  iPhone (Dynamic Island), iPad (even bezel, camera dot) and Pixel (punch-hole),
+  each matched to the device its screenshot came from.
+- Added a device-family strip (iPad / iPhone / Android) so the "iPhone, iPad and
+  Android" claim is demonstrated rather than asserted.
+- The screenshot gallery became a scroll-snap carousel.
+- Added a 7-second silent hero video (~1.6MB) cut from the App Store preview,
+  and the 4.6★/124-ratings social proof.
+
+**Mobile length went *down* despite all the additions** — 8,263px → 7,882px.
+The carousel took the gallery from ~2,100px to 705px, and a single-row device
+lineup took the new strip from 1,099px to 220px.
+
+**Fixed alongside:**
+
+- Footer tap targets were 23px tall — under the 24×24 floor in WCAG 2.5.8. Now
+  42px; theme and menu toggles now 44×44.
+- The book cover declared 260×390 against a real 370×600 file, reserving the
+  wrong-shaped box and shifting layout on load.
+- `@fontsource/quicksand/500.css` was imported but no rule used weight 500.
+- Dependencies had drifted from 0 to 6 vulnerabilities (5 high), all build-time
+  only. Cleared; Astro 7.0.7 → 7.2.8.
+- `media-src 'self'` added to the CSP for the video — the first CSP change since
+  launch, and still no third-party origins.
+
+**Verified live in a browser this time**, closing a long-standing gap: the
+hamburger menu and theme toggle had been shipped in July on static analysis
+alone because the browser tooling was unreachable. Both confirmed correct.
+
+**Gotcha worth remembering:** a class passed to a child Astro component lands
+on *that component's* root element, which carries **its** scope hash, not the
+calling page's. `.hero__device { width: … }` in the page's `<style>` silently
+did nothing until wrapped as `.hero__phone :global(.hero__device)`. It fails
+quietly — the element just renders at the wrong size.
+
 ## Current live state
 
-**⚠️ As of 2026-07-10 18:35 UTC, `https://practicingpresence.app` is serving a
-stale, frozen edge-cache snapshot** — see "Stuck edge cache" in Known open
-issues below. The underlying deployment is 100% correct and fully verified
-(see "Dark mode / hamburger menu implementation" above and the deployment
-checks below), confirmed by hitting the Pages project's raw `.pages.dev` URL
-directly, bypassing the zone's cache entirely. This is a Cloudflare
-platform-side caching anomaly, not a problem with the code or the deploy.
-**Before trusting anything served at the custom domain, re-check
-`cf-cache-status` and the ETag against what's below — if the ETag still
-reads `3af2fb23a51413e1b0360e7c15147441`, the cache still hasn't cleared.**
+**Healthy as of 2026-08-27.** The "stale frozen cache" that dominated the July
+notes below was resolved on 2026-07-12 — it was a duplicate Pages project
+claiming the same hostname, not a cache at all. The table below was written
+during that incident; the July rows about staleness are kept for the record but
+no longer describe the live site. Current state was re-verified in the
+2026-08-27 pass above: fresh content, `cf-cache-status: DYNAMIC`, valid
+certificate, all security headers present, 0 npm vulnerabilities.
 
 | Check | Result | Verified via |
 | --- | --- | --- |

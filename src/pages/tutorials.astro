@@ -13,15 +13,19 @@ const steps = [
   },
   {
     title: '2. Set your reminder window',
-    body: 'On first launch, choose a start and end time (for example, 7:00 am to 9:00 pm). During that window the app offers gentle hourly invitations to pause for three conscious breaths.',
+    body: 'On first launch, choose a start and end time. The app defaults to 8:00 am – 8:00 pm, the window the practice is built around: leaving too long between breaths makes it harder to settle into stillness.',
   },
   {
     title: '3. Begin with the Morning Practice',
-    body: 'Choose 10, 15, or 20 minutes — or open-ended. Rest a hand on your heart, follow the gentle audio guidance, and begin the day in stillness.',
+    body: 'Choose 15 or 20 minutes, or stay as long as you like. Rest a hand on your heart, follow the gentle audio guidance, and begin the day in stillness.',
   },
   {
-    title: '4. Return through the day',
-    body: 'When a reminder arrives, take three conscious breaths (or more). In the evening, sit with the Three Questions to notice where you were present.',
+    title: '4. Renew each hour',
+    body: 'When an invitation arrives, take three conscious breaths — and as you breathe, ask the three questions: am I present now? how do I feel inside? do I have a sense of calm or peace within? This is hourly renewal, not an end-of-day review.',
+  },
+  {
+    title: '5. Go deeper when you have time',
+    body: 'The app carries a library of Choosing Presence conversation films, a link to the book, and the Awakening to Presence course — all from the Information screen.',
   },
 ];
 ---
@@ -59,7 +63,7 @@ const steps = [
 
   <section class="section section--tint">
     <div class="container">
-      <h2>Getting started in four steps</h2>
+      <h2>Getting started</h2>
       <div class="steps">
         {
           steps.map((s) => (

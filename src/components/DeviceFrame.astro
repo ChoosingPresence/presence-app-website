@@ -1,0 +1,165 @@
+---
+/**
+ * Renders a screenshot inside a CSS-drawn frame matched to the device the
+ * screenshot actually came from:
+ *   iphone — Dynamic Island, thin uniform bezel, side buttons
+ *   ipad   — even bezel all round, front camera dot, squarer corners
+ *   pixel  — centred punch-hole camera, thin bezel, right-side buttons
+ *
+ * Sizing comes from the parent (set a width on the wrapper); bezel and corner
+ * radii are tuned per device via custom properties, with a `--frame-scale`
+ * hook so smaller instances (gallery thumbnails) stay proportionate.
+ */
+interface Props {
+  device: 'iphone' | 'ipad' | 'pixel';
+  /** Accessible label describing what the screen shows. */
+  label: string;
+  class?: string;
+}
+
+const { device, label, class: className } = Astro.props;
+---
+
+<figure class:list={['device', `device--${device}`, className]}>
+  <div class="device__body">
+    <div class="device__screen">
+      <slot />
+      {device === 'iphone' && <span class="device__island" aria-hidden="true"></span>}
+      {device === 'pixel' && <span class="device__punch" aria-hidden="true"></span>}
+    </div>
+    {device === 'ipad' && <span class="device__cam" aria-hidden="true"></span>}
+  </div>
+  <span class="device__btn device__btn--a" aria-hidden="true"></span>
+  <span class="device__btn device__btn--b" aria-hidden="true"></span>
+  <span class="device__btn device__btn--c" aria-hidden="true"></span>
+  <figcaption class="visually-hidden">{label}</figcaption>
+</figure>
+
+<style>
+  .device {
+    --frame-scale: 1;
+    --bezel: calc(9px * var(--frame-scale));
+    --body-r: calc(38px * var(--frame-scale));
+    --screen-r: calc(30px * var(--frame-scale));
+    --btn-w: calc(2.5px * var(--frame-scale));
+
+    /* Titanium-ish shell that holds up on both light and dark grounds. */
+    --shell: linear-gradient(150deg, #4a5a5e 0%, #26343a 18%, #1b262b 52%, #33454a 88%, #55686d 100%);
+    --shell-edge: rgba(255, 255, 255, 0.16);
+
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    line-height: 0;
+    max-width: 100%;
+  }
+
+  .device__body {
+    position: relative;
+    padding: var(--bezel);
+    background: var(--shell);
+    border-radius: var(--body-r);
+    box-shadow:
+      0 0 0 1px var(--shell-edge) inset,
+      0 18px 44px rgba(9, 26, 28, 0.34),
+      0 3px 10px rgba(9, 26, 28, 0.22);
+  }
+
+  .device__screen {
+    position: relative;
+    border-radius: var(--screen-r);
+    overflow: hidden;
+    background: #0d1b1d;
+    /* Keeps the screenshot's own corners from peeking past the bezel radius. */
+    isolation: isolate;
+  }
+
+  .device__screen :global(img),
+  .device__screen :global(video) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* iPhone — Dynamic Island */
+  .device__island {
+    position: absolute;
+    top: calc(9px * var(--frame-scale));
+    left: 50%;
+    transform: translateX(-50%);
+    width: 27%;
+    height: calc(23px * var(--frame-scale));
+    background: #05090a;
+    border-radius: 999px;
+    z-index: 2;
+  }
+
+  /* Pixel — centred punch-hole */
+  .device__punch {
+    position: absolute;
+    top: calc(8px * var(--frame-scale));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(9px * var(--frame-scale));
+    height: calc(9px * var(--frame-scale));
+    background: #05090a;
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  /* iPad — front camera sits on the bezel, not the screen */
+  .device__cam {
+    position: absolute;
+    top: calc(var(--bezel) / 2);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(5px * var(--frame-scale));
+    height: calc(5px * var(--frame-scale));
+    background: #0b1416;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  /* Side buttons */
+  .device__btn {
+    position: absolute;
+    width: var(--btn-w);
+    background: linear-gradient(180deg, #56686d, #2c3a3f);
+    border-radius: 1px;
+  }
+
+  /* iPhone: volume up / volume down left, power right */
+  .device--iphone .device__btn--a { left: calc(var(--btn-w) * -1 + 1px); top: 20%;   height: 7%;  border-radius: 2px 0 0 2px; }
+  .device--iphone .device__btn--b { left: calc(var(--btn-w) * -1 + 1px); top: 29.5%; height: 7%;  border-radius: 2px 0 0 2px; }
+  .device--iphone .device__btn--c { right: calc(var(--btn-w) * -1 + 1px); top: 24%;  height: 11%; border-radius: 0 2px 2px 0; }
+
+  /* Pixel: power + volume both on the right, power above volume */
+  .device--pixel .device__btn--a { right: calc(var(--btn-w) * -1 + 1px); top: 17%; height: 6%;  border-radius: 0 2px 2px 0; }
+  .device--pixel .device__btn--b { right: calc(var(--btn-w) * -1 + 1px); top: 25%; height: 10%; border-radius: 0 2px 2px 0; }
+  .device--pixel .device__btn--c { display: none; }
+
+  /* iPad: single power button top-right edge, volume pair on the right */
+  .device--ipad .device__btn--a { right: 9%; top: calc(var(--btn-w) * -1 + 1px); width: 8%; height: var(--btn-w); border-radius: 2px 2px 0 0; }
+  .device--ipad .device__btn--b { right: calc(var(--btn-w) * -1 + 1px); top: 12%; height: 5%; border-radius: 0 2px 2px 0; }
+  .device--ipad .device__btn--c { right: calc(var(--btn-w) * -1 + 1px); top: 19%; height: 5%; border-radius: 0 2px 2px 0; }
+
+  /* Per-device geometry */
+  .device--iphone {
+    --bezel: calc(9px * var(--frame-scale));
+    --body-r: calc(40px * var(--frame-scale));
+    --screen-r: calc(32px * var(--frame-scale));
+  }
+
+  .device--pixel {
+    --bezel: calc(8px * var(--frame-scale));
+    --body-r: calc(30px * var(--frame-scale));
+    --screen-r: calc(23px * var(--frame-scale));
+  }
+
+  .device--ipad {
+    --bezel: calc(13px * var(--frame-scale));
+    --body-r: calc(22px * var(--frame-scale));
+    --screen-r: calc(10px * var(--frame-scale));
+    --btn-w: calc(3px * var(--frame-scale));
+  }
+</style>

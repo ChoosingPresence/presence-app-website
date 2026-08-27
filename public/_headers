@@ -2,7 +2,7 @@
 # Docs: https://developers.cloudflare.com/pages/configuration/headers/
 
 /*
-  Content-Security-Policy: default-src 'none'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'none'; img-src 'self' data:; media-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
@@ -18,3 +18,7 @@
 # Images change rarely; cache for a day at the edge/browser.
 /images/*
   Cache-Control: public, max-age=86400
+
+# The app preview video is large and effectively immutable — cache it hard.
+/videos/*
+  Cache-Control: public, max-age=604800

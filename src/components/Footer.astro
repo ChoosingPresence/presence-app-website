@@ -81,7 +81,14 @@ const year = new Date().getFullYear();
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.4rem;
+    gap: 0.15rem;
+  }
+
+  /* Links were 23px tall — under the 24×24 floor in WCAG 2.5.8. Padding
+     lifts each row to ~40px without changing the visual rhythm much. */
+  .footer-grid ul a {
+    display: inline-block;
+    padding-block: 0.45rem;
   }
 
   .footer-legal {

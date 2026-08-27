@@ -146,8 +146,9 @@ const currentPath = Astro.url.pathname;
   .theme-toggle {
     display: grid;
     place-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
+    /* 44px — Apple HIG comfort target, comfortably clears WCAG 2.5.8 */
+    width: 2.75rem;
+    height: 2.75rem;
     border: 1px solid var(--border-subtle);
     border-radius: 999px;
     background: transparent;
@@ -197,8 +198,8 @@ const currentPath = Astro.url.pathname;
   /* Hamburger — hidden on desktop */
   .menu-toggle {
     display: none;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
     border: 1px solid var(--border-subtle);
     border-radius: 0.6rem;
@@ -296,7 +297,8 @@ const currentPath = Astro.url.pathname;
       font-size: 1.05rem;
       text-decoration: none;
       color: var(--heading);
-      padding-block: 0.35rem;
+      /* Fills the row to a 44px tap target */
+      padding-block: 0.6rem;
     }
 
     .mobile-nav a[aria-current='page'] {

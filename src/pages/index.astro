@@ -1,14 +1,31 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StoreBadges from '../components/StoreBadges.astro';
+import DeviceFrame from '../components/DeviceFrame.astro';
+
+import iphoneHome from '../assets/screens/iphone-home.jpg';
+import iphoneMorning from '../assets/screens/iphone-morning-practice.jpg';
+import iphoneQuestions from '../assets/screens/iphone-three-questions.jpg';
+import iphoneBreaths from '../assets/screens/iphone-three-breaths.jpg';
+import iphoneVideos from '../assets/screens/iphone-videos.jpg';
+import iphoneInformation from '../assets/screens/iphone-information.jpg';
+import ipadHome from '../assets/screens/ipad-home.jpg';
+import pixelHome from '../assets/screens/pixel-home.jpg';
 
 const structuredData = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'MobileApplication',
   name: 'Practicing Presence — A Christian Way',
-  operatingSystem: 'iOS, Android',
+  operatingSystem: 'iOS, iPadOS, Android',
   applicationCategory: 'HealthApplication',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.6',
+    ratingCount: '124',
+    bestRating: '5',
+  },
   author: { '@type': 'Organization', name: 'B:Drive Communications, LLC' },
   url: 'https://practicingpresence.app',
   installUrl: [
@@ -20,33 +37,39 @@ const structuredData = JSON.stringify({
 const features = [
   {
     title: 'Morning Practice',
-    body: 'A flexible 10–20 minute guided morning meditation to begin the day rooted in stillness, with gentle audio guidance and a hand-on-heart grounding technique.',
+    body: 'A guided morning meditation of 15 or 20 minutes — or stay as long as you like. Gentle audio guidance and a hand-on-heart grounding technique to begin the day rooted in stillness.',
   },
   {
-    title: 'Three Breaths (or more)',
-    body: 'Optional hourly reminders invite you to pause throughout the day for three conscious breaths — a moment to return to God’s presence wherever you are.',
+    title: 'Three Breaths (for presence)',
+    body: 'Whenever unease or anxiety begins to build, take three conscious breaths with the intention of connecting with God’s spiritual energy. Practiced each hour from 8am to 8pm, it renews you throughout the day.',
   },
   {
-    title: 'Three Questions',
-    body: 'Three simple daily reflection questions help you notice where you were present — and where fear, anxiety, or stress pulled you away.',
+    title: 'Three Questions (hourly renewal)',
+    body: 'Three questions asked as you breathe — am I present now? how do I feel inside? do I have a sense of calm or peace within? — to gauge your spiritual progress and return to the power of the present moment.',
   },
   {
-    title: 'Gentle Reminders, Your Schedule',
-    body: 'Choose the window that fits your life (say, 7:00 am to 9:00 pm). Turn reminders off any time. The app adapts to your rhythm, not the other way around.',
+    title: 'Choosing Presence Videos',
+    body: 'A library of Choosing Presence conversations built right into the app, including the conversation at Tamaya — for going deeper whenever you have the time.',
+  },
+  {
+    title: 'Reminders on Your Schedule',
+    body: 'Hourly invitations arrive between 8:00 am and 8:00 pm by default. Set whatever window fits your life, or turn reminders off entirely. The app adapts to your rhythm, not the other way around.',
   },
 ];
 
 const screens = [
-  { src: '/images/screens/home.jpg', alt: 'Practicing Presence home screen with Morning Practice, Three Questions, and Three Breaths circles' },
-  { src: '/images/screens/meditation.jpg', alt: 'Meditation timer screen with a heart illustration and the words “Experience the spirit within”' },
-  { src: '/images/screens/peace.jpg', alt: 'Meditation screen with the words “The power in the peace” over a soft green background' },
-  { src: '/images/screens/information.jpg', alt: 'Information screen with notification start and end times and links' },
+  { src: iphoneHome, alt: 'The Practicing Presence home screen, with Morning Practice, Three Questions and Three Breaths as overlapping circles' },
+  { src: iphoneMorning, alt: 'The Morning Practice timer offering 15 minutes, 20 minutes or open-ended, above a line-drawn heart' },
+  { src: iphoneBreaths, alt: 'The Three Breaths screen explaining how to take three conscious breaths each hour' },
+  { src: iphoneQuestions, alt: 'The Three Questions screen listing the three questions asked while breathing' },
+  { src: iphoneVideos, alt: 'The Choosing Presence Videos library inside the app, showing conversation films' },
+  { src: iphoneInformation, alt: 'The Information screen with reminder start and end times set to 8:00 am and 8:00 pm' },
 ];
 ---
 
 <BaseLayout
   title="Practicing Presence — A Christian Way | Free Christian Mindfulness App"
-  description="Practicing Presence is a 100% free Christian mindfulness app. Pause, breathe, and rest in God's presence — no account, no ads, no in-app purchases. Available for iPhone and Android."
+  description="Practicing Presence is a 100% free Christian mindfulness app. Pause, breathe, and rest in God's presence — no account, no ads, no in-app purchases. For iPhone, iPad and Android."
   path="/"
 >
   <script type="application/ld+json" set:html={structuredData} is:inline />
@@ -58,25 +81,34 @@ const screens = [
         <p class="hero__eyebrow">A Christian Way</p>
         <h1>Pause. Breathe. Rest in God&rsquo;s presence.</h1>
         <p class="hero__lead">
-          Practicing Presence is a simple companion for contemplative Christian
-          practice — a guided morning meditation, three conscious breaths through
-          the day, and three questions each evening.
+          A simple companion for contemplative Christian practice — a guided
+          morning meditation, then three conscious breaths and three questions
+          to return you to presence through the hours of the day.
         </p>
         <StoreBadges />
+        <p class="rating">
+          <span class="rating__stars" aria-hidden="true">★★★★★</span>
+          <span><strong>4.6</strong> from 124 ratings on the App Store</span>
+        </p>
         <p class="hero__trust">
           <strong>100% free.</strong> No account or sign-up. No ads. No in-app purchases.
         </p>
       </div>
       <div class="hero__phone">
-        <div class="phone-frame">
-          <img
-            src="/images/screens/home.jpg"
-            alt="Practicing Presence app home screen"
-            width="320"
-            height="696"
-            fetchpriority="high"
-          />
-        </div>
+        <DeviceFrame device="iphone" label="Practicing Presence running on iPhone" class="hero__device">
+          <video
+            data-hero-video
+            src="/videos/app-preview.mp4"
+            poster="/videos/app-preview-poster.jpg"
+            width="332"
+            height="720"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="A short silent preview of the Practicing Presence app in use"
+          ></video>
+        </DeviceFrame>
       </div>
     </div>
   </section>
@@ -122,29 +154,69 @@ const screens = [
   <section class="section section--deep" aria-labelledby="screens-heading">
     <div class="container">
       <h2 id="screens-heading" class="center">A glimpse inside</h2>
-      <div class="screen-row">
-        {
-          screens.map((s) => (
-            <figure class="screen">
-              <div class="phone-frame phone-frame--sm">
-                <img src={s.src} alt={s.alt} width="240" height="522" loading="lazy" />
-              </div>
-            </figure>
-          ))
-        }
+      <p class="section__lead lead-center screens-hint">
+        Swipe to look around the app.
+      </p>
+    </div>
+    <ul class="screen-rail" aria-label="Screenshots of the app">
+      {
+        screens.map((s) => (
+          <li>
+            <DeviceFrame device="iphone" label={s.alt} class="screen-rail__device">
+              <Image
+                src={s.src}
+                alt={s.alt}
+                widths={[240, 480]}
+                sizes="(max-width: 720px) 62vw, 240px"
+                loading="lazy"
+              />
+            </DeviceFrame>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Device family -->
+  <section class="section" aria-labelledby="devices-heading">
+    <div class="container">
+      <h2 id="devices-heading" class="center">One practice, every screen</h2>
+      <p class="section__lead lead-center">
+        The same app on iPhone, iPad and Android — a real build for each, not a
+        stretched phone layout.
+      </p>
+      <div class="device-strip">
+        <div class="device-strip__item">
+          <DeviceFrame device="ipad" label="Practicing Presence on iPad">
+            <Image src={ipadHome} alt="The Practicing Presence home screen on an iPad, with the practice circles laid out across the wider display" widths={[380, 760]} sizes="(max-width: 760px) 80vw, 380px" loading="lazy" />
+          </DeviceFrame>
+          <p class="device-strip__label">iPad</p>
+        </div>
+        <div class="device-strip__item">
+          <DeviceFrame device="iphone" label="Practicing Presence on iPhone">
+            <Image src={iphoneHome} alt="The Practicing Presence home screen on an iPhone" widths={[190, 380]} sizes="(max-width: 760px) 42vw, 190px" loading="lazy" />
+          </DeviceFrame>
+          <p class="device-strip__label">iPhone</p>
+        </div>
+        <div class="device-strip__item">
+          <DeviceFrame device="pixel" label="Practicing Presence on Android">
+            <Image src={pixelHome} alt="The Practicing Presence home screen on a Pixel phone running Android" widths={[190, 380]} sizes="(max-width: 760px) 42vw, 190px" loading="lazy" />
+          </DeviceFrame>
+          <p class="device-strip__label">Android</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Choosing Presence roots -->
-  <section class="section" aria-labelledby="roots-heading">
+  <section class="section section--tint" aria-labelledby="roots-heading">
     <div class="container roots">
       <div class="roots__book">
         <img
           src="/images/choosing-presence-book.jpg"
           alt="Cover of the book Choosing Presence by Jim Heaney"
-          width="260"
-          height="390"
+          width="370"
+          height="600"
           loading="lazy"
         />
       </div>
@@ -174,7 +246,7 @@ const screens = [
   </section>
 
   <!-- Tutorials teaser -->
-  <section class="section section--tint" aria-labelledby="learn-heading">
+  <section class="section" aria-labelledby="learn-heading">
     <div class="container center">
       <h2 id="learn-heading">New here? We&rsquo;ll walk you through it.</h2>
       <p class="section__lead lead-center">
@@ -206,6 +278,28 @@ const screens = [
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Start the hero preview only when motion is welcome. The poster frame
+  // stands in otherwise, and `preload="metadata"` keeps the 2.4MB file off
+  // the critical path until we actually ask for it.
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const stillPreferred = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function sync() {
+    if (!video) return;
+    if (stillPreferred.matches) {
+      video.pause();
+    } else {
+      video.play().catch(() => {
+        /* Autoplay refused — the poster frame is a fine fallback. */
+      });
+    }
+  }
+
+  sync();
+  stillPreferred.addEventListener('change', sync);
+</script>
 
 <style>
   /* Hero */
@@ -248,6 +342,32 @@ const screens = [
     justify-content: center;
   }
 
+  /* :global — these class names land on DeviceFrame's own root element, which
+     carries that component's scope hash rather than this page's. */
+  .hero__phone :global(.hero__device) {
+    width: min(280px, 72vw);
+  }
+
+  /* App Store rating */
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 1.1rem 0 0;
+    font-size: 0.98rem;
+    color: var(--ink-muted);
+  }
+
+  .rating__stars {
+    color: var(--star);
+    letter-spacing: 0.06em;
+    font-size: 1.05rem;
+  }
+
+  .rating strong {
+    color: var(--heading);
+  }
+
   /* Free list */
   .free-list {
     list-style: none;
@@ -277,17 +397,82 @@ const screens = [
     margin-top: 2rem;
   }
 
-  /* Screenshots */
-  .screen-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.4rem;
-    margin-top: 2.25rem;
+  /* Screenshot rail — scroll-snap carousel on every width */
+  .screens-hint {
+    margin-bottom: 0;
   }
 
-  .screen {
+  .screen-rail {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0 max((100vw - var(--max-width)) / 2 + 1.5rem, 1.5rem) 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .screen-rail li {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    line-height: 0;
+  }
+
+  .screen-rail li :global(.screen-rail__device) {
+    --frame-scale: 0.8;
+    width: min(240px, 62vw);
+  }
+
+  .screen-rail::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .screen-rail::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+  }
+
+  /* Device family strip */
+  /* A single lineup at every width — the point of this section is the size
+     relationship between the three, which a wrapped stack destroys. */
+  .device-strip {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(0.9rem, 3vw, 3.25rem);
+    margin-top: 2.5rem;
+  }
+
+  .device-strip__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    min-width: 0;
+  }
+
+  .device-strip__item :global(.device--ipad) {
+    width: clamp(140px, 38vw, 380px);
+  }
+
+  .device-strip__item :global(.device--iphone),
+  .device-strip__item :global(.device--pixel) {
+    --frame-scale: 0.72;
+    width: clamp(72px, 19vw, 190px);
+  }
+
+  .device-strip__label {
     margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
   }
 
   /* Roots */
@@ -341,6 +526,10 @@ const screens = [
       justify-content: center;
     }
 
+    .rating {
+      justify-content: center;
+    }
+
     .roots {
       grid-template-columns: 1fr;
       text-align: center;
@@ -353,6 +542,24 @@ const screens = [
 
     .roots__buttons {
       justify-content: center;
+    }
+  }
+
+  /* Bezels and radii are drawn in px, so they need scaling down alongside the
+     device widths or small frames end up looking like thick-rimmed toys. */
+  @media (max-width: 640px) {
+    .device-strip__item :global(.device--ipad) {
+      --frame-scale: 0.55;
+    }
+
+    .device-strip__item :global(.device--iphone),
+    .device-strip__item :global(.device--pixel) {
+      --frame-scale: 0.34;
+    }
+
+    .device-strip__label {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
     }
   }
 </style>

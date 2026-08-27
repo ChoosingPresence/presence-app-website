@@ -22,19 +22,68 @@
 
 ## Images
 
-All in `public/images/`:
+**App screenshots live in `src/assets/screens/`**, not `public/`. That routes
+them through Astro's image pipeline, which emits WebP at multiple widths with
+`srcset` automatically — roughly a 90% size reduction (a 190KB JPEG becomes a
+20KB WebP at display size). Import them and use `<Image>`; never hardcode a
+path to them.
+
+Everything else stays in `public/images/` (referenced by plain URL):
 
 - `app-icon.png` — app icon (from the app repo's `apple-icon.png`)
-- `screens/*.jpg` — simulator screenshots, resized to 640px wide
-- `choosing-presence-book.jpg` — book cover
+- `choosing-presence-book.jpg` — book cover, 370×600
 - `og-image.jpg` — 1200×630 social-share image
 
-To refresh screenshots, drop new PNGs in the parent `Screenshots/` folder and
-re-run (from the repo root):
+To refresh screenshots after an app release, source them from
+`Assets/screenshots/` (iOS/iPhone, iOS/iPad, Android/Pixel Phone,
+Android/Pixel Tablet) and resize — phones to 900px wide, tablets to 1200px:
 
 ```bash
-sips -s format jpeg -s formatOptions 82 --resampleWidth 640 "<screenshot>.png" --out public/images/screens/<name>.jpg
+sips -s format jpeg -s formatOptions 88 --resampleWidth 900 "<screenshot>.png" \
+  --out src/assets/screens/iphone-<name>.jpg
 ```
+
+Astro handles everything downstream from there.
+
+## Device frames
+
+`src/components/DeviceFrame.astro` draws a CSS frame around a screenshot:
+
+```astro
+<DeviceFrame device="iphone" label="What this screen shows">
+  <Image src={shot} alt="…" widths={[240, 480]} sizes="240px" />
+</DeviceFrame>
+```
+
+`device` is `iphone` (Dynamic Island), `ipad` (even bezel, camera dot) or
+`pixel` (punch-hole camera). **Always match the frame to the device the
+screenshot actually came from** — an iPad capture in a phone frame looks wrong
+and misrepresents the app.
+
+Size it by setting a width on the frame from the parent, and scale the bezel
+and corner radii to match with `--frame-scale` (1 = hero size; go lower for
+smaller frames, or the bezels look like thick rubber rims).
+
+> **Gotcha:** the class you pass lands on DeviceFrame's own root element, which
+> carries *that component's* Astro scope hash — not the calling page's. A plain
+> `.my-class { width: … }` rule in the page's `<style>` will silently not
+> apply. Wrap it: `.parent :global(.my-class) { width: … }`.
+
+## Video
+
+`public/videos/app-preview.mp4` is a 7-second silent loop cut from the App
+Store preview (the Morning Practice segment, source seconds 22.6–29.6),
+compressed to ~1.6MB with macOS's built-in `avconvert`:
+
+```bash
+avconvert -s "<source>.mp4" -o out.m4v -p PresetAppleM4V720pHD \
+  --start 22.6 --duration 7 --replace
+```
+
+The preset only writes `.m4v`; rename to `.mp4` afterwards so the server sends
+`video/mp4` (identical container). It needs `media-src 'self'` in the CSP, and
+it only autoplays when the visitor hasn't asked for reduced motion — the poster
+frame stands in otherwise.
 
 ## Style / brand
 
@@ -96,7 +145,25 @@ sips -s format jpeg -s formatOptions 82 --resampleWidth 640 "<screenshot>.png" -
 
 ## Facts the site asserts (keep true)
 
+Verified against app **v1.8.6** on 2026-08-27. The app is the source of truth —
+when it changes, these change. A July 2026 audit found the site had drifted
+badly on the three practices, so re-check this list against real screenshots
+whenever the app ships a feature release.
+
 - 100% free, no account/sign-up, no ads, no in-app purchases
 - Maintained by B:Drive Communications, LLC
 - Companion to *Choosing Presence* by Jim Heaney; book proceeds go to charity
-- Morning Practice 10–20 min; hourly Three Breaths reminders; Three Questions
+- **Morning Practice** — 15 min, 20 min, or open-ended. (There is no 10-minute
+  option; there was in versions before 1.8.6.)
+- **Three Breaths (for presence)** — taken whenever unease or anxiety begins to
+  build, with the intention of connecting with God's spiritual energy, and as
+  an hourly discipline from 8am to 8pm.
+- **Three Questions (hourly renewal)** — *am I present now? how do I feel
+  inside? do I have a sense of calm or peace within at some level?* Asked one
+  per breath, to gauge spiritual progress. **This is an hourly practice, not an
+  evening or end-of-day reflection** — the site described it wrongly for months.
+- **Choosing Presence Videos** — a library of conversation films inside the app.
+- Notification window defaults to **8:00 am – 8:00 pm**.
+- App Store rating shown on the homepage: **4.6 from 124 ratings**. Hardcoded in
+  `index.astro` (both the visible line and the JSON-LD `aggregateRating`);
+  re-check it occasionally.
